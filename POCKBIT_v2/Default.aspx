@@ -34,7 +34,7 @@
     <div class="background-image"></div>
     <div class="overlay-content">
         <h1 id="aspnetTitle" class="text-info">POCKBIT PHARMA</h1>
-        <p class="lead card-header">ASP.NET is a web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+        <p class="lead card-header"></p>
         <p><a href="http://www.asp.net" class="btn btn-info btn-md">Learn more &raquo;</a></p>
     </div>
     <main class="content">

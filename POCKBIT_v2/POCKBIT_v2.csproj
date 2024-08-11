@@ -265,6 +265,7 @@
     <Content Include="Account\VerifyPhoneNumber.aspx" />
     <Content Include="assets\css\common.css" />
     <Content Include="assets\css\demo.css" />
+    <Content Include="assets\img\backgrounds\pexels-cottonbro-5722883.jpg" />
     <Content Include="assets\img\backgrounds\pexels-koprivakart-3634855.jpg" />
     <Content Include="assets\img\favicon\favicon.ico" />
     <Content Include="assets\img\favicon\favicon2.ico" />

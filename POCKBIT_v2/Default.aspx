@@ -8,7 +8,7 @@
             height: 100%;
         }
         .background-image {
-            background-image: url('<%= ResolveUrl("~/assets/img/backgrounds/pexels-koprivakart-3634855.jpg") %>');
+            background-image: url('<%= ResolveUrl("~/assets/img/backgrounds/pexels-cottonbro-5722883.jpg") %>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -33,15 +33,9 @@
     </style>
     <div class="background-image"></div>
     <div class="overlay-content">
-        <h1 id="aspnetTitle" class="text-info">POCKBIT PHARMA</h1>
-        <p class="lead card-header"></p>
+        <h1 id="aspnetTitle" class="text-white">POCKBIT PHARMA</h1>
         <p><a href="~/Paginas/dashboard" class="btn btn-info btn-md">Iniciar Sesión &raquo;</a></p>
     </div>
     <main class="content">
-        <section class="text-center py-3 text-light">
-            <p class="mt-3 text-muted small">example</p>
-            <div class="d-flex justify-content-center mt-4">
-            </div>
-        </section>
     </main>
 </asp:Content>

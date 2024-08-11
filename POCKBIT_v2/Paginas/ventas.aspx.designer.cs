@@ -78,6 +78,15 @@ namespace POCKBIT_v2.Paginas
         protected global::System.Web.UI.WebControls.TextBox txtCantidadV;
 
         /// <summary>
+        /// Control txtDescuento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDescuento;
+
+        /// <summary>
         /// Control btnInsertar.
         /// </summary>
         /// <remarks>

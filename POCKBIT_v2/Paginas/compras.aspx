@@ -31,6 +31,10 @@
                         <label class="form-control-label">Cantidad comprada:</label>
                         <asp:TextBox ID="txtCantidadC" runat="server" Placeholder="Numeros enteros" CssClass="form-control"></asp:TextBox>
                     </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-control-label">Descuento:</label>
+                        <asp:TextBox ID="txtDescuento" runat="server" Placeholder="Funcion inactiva" CssClass="form-control"></asp:TextBox>
+                    </div>
                 </div>
                 <div class="row mb-2 btn-center">
                     <div class="col-md-3 mb-2">

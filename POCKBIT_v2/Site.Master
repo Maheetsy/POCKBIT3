@@ -86,7 +86,6 @@
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul class="navbar-nav navbar-right">
-                                <li><a runat="server" class="nav-link" href="~/Account/Register">Registrarse</a></li>
                                 <li><a runat="server" class="nav-link" href="~/Account/Login">Iniciar sesión</a></li>
                             </ul>
                         </AnonymousTemplate>

@@ -1,0 +1,57 @@
+﻿/* common.css */
+
+/* Aplicar globalmente */
+.form-control, .form-control-label {
+    height: 38px;
+    width: 100%;
+}
+
+.form-control-label {
+    display: flex;
+    align-items: normal;
+    justify-content: normal;
+    text-align: justify;
+}
+
+.mb-4-spacing {
+    margin-bottom: 1.5rem;
+}
+
+.btn-center {
+    display: flex;
+    justify-content: center;
+}
+
+    .btn-center .col-md-3 {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+.row-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.custom-table th, .custom-table td {
+    padding: 10px;
+    text-align: left;
+    border-top: 1px solid #ddd !important;
+}
+
+.custom-table thead {
+    background-color: #03c3ec;
+    color: white;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.custom-table thead th {
+    border-bottom: 2px solid #ddd;
+}

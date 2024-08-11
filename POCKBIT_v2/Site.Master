@@ -1,0 +1,125 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="POCKBIT_v2.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="es">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - POCKBIT Pharma</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <!-- Favicon logo de la pestaña-->
+    <link rel="icon" type="image/x-icon" href="~/assets/img/favicon/favicon2.ico" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/assets/vendor/fonts/boxicons.css" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="~/assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="~/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="~/assets/css/demo.css" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="~/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/assets/vendor/libs/apex-charts/apex-charts.css" />
+    <!-- Page CSS -->
+    <!-- Referencia a common.css -->
+    <link rel="stylesheet" href="~/assets/css/common.css" />
+
+
+
+    <style>
+        .navbar {
+            background-color: #ffffff !important;
+        }
+
+        .nav-link {
+            color: #333333 !important; /* Gris casi negro */
+        }
+
+            .nav-link:hover {
+                color: #03b0d4 !important; /* Gris oscuro */
+            }
+
+        .navbar-brand {
+            font-size: 1rem;
+            color: #fff !important; /* Gris casi negro */
+        }
+
+            .navbar-brand:hover {
+                color: #555555 !important; /* Gris oscuro */
+            }
+
+        .nav-link-logout:hover {
+            color: red !important;
+        }
+    </style>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+            </Scripts>
+        </asp:ScriptManager>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light">
+            <div class="container">
+                <a class="btn btn-info" runat="server" href="~/">POCKBIT PHARMA</a>
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Alternar navegación" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul class="navbar-nav navbar-right">
+                                <li><a runat="server" class="nav-link" href="~/Account/Register">Registrarse</a></li>
+                                <li><a runat="server" class="nav-link" href="~/Account/Login">Iniciar sesión</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/dashboard">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/laboratorios">Laboratorios</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/medicamentos">Medicamentos</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/lotes">Lotes</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/compras">Compras</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/ventas">Ventas</a></li>
+                            </ul>
+                            <ul class="navbar-nav navbar-right">
+                                <li><a runat="server" class="nav-link" href="~/Account/Manage" title="Manage your account">Hola, <%: Context.User.Identity.GetUserName() %> !</a></li>
+                                <li>
+                                    <asp:LoginStatus runat="server" CssClass="nav-link nav-link-logout" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/" OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </div>
+            </div>
+        </nav>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - Pockbit Pharma</p>
+            </footer>
+        </div>
+    </form>
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/Scripts/bootstrap.js") %>
+    </asp:PlaceHolder>
+</body>
+</html>

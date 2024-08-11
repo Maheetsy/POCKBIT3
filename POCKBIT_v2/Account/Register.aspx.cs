@@ -11,6 +11,13 @@ namespace POCKBIT_v2.Account
 {
     public partial class Register : Page
     {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            {
+                Response.Redirect("~/Account/Login");
+            }
+        }
         protected void CreateUser_Click(object sender, EventArgs e)
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();

@@ -35,13 +35,12 @@
     <div class="overlay-content">
         <h1 id="aspnetTitle" class="text-info">POCKBIT PHARMA</h1>
         <p class="lead card-header"></p>
-        <p><a href="http://www.asp.net" class="btn btn-info btn-md">Learn more &raquo;</a></p>
+        <p><a href="~/Paginas/dashboard" class="btn btn-info btn-md">Iniciar Sesión &raquo;</a></p>
     </div>
     <main class="content">
         <section class="text-center py-3 text-light">
             <p class="mt-3 text-muted small">example</p>
             <div class="d-flex justify-content-center mt-4">
-                <img class="img-fluid rounded-lg" src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8MHx8&auto=format&fit=crop&w=1632&q=80" alt="Image" />
             </div>
         </section>
     </main>

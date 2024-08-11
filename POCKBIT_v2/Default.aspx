@@ -34,7 +34,7 @@
     <div class="background-image"></div>
     <div class="overlay-content">
         <h1 id="aspnetTitle" class="text-white">POCKBIT PHARMA</h1>
-        <p><a href="~/Account/Login" class="btn btn-info btn-md">Iniciar Sesión &raquo;</a></p>
+        <p><a href="/Account/Login" class="btn btn-info btn-md">Iniciar Sesión &raquo;</a></p>
     </div>
     <main class="content">
     </main>

@@ -50,6 +50,7 @@
         </div>
     </div>
 
+
     <div class="row row-center mb-4">
         <div class="col-md-6 mb-4-spacing">
             <label class="form-control-label">Código de Verificación:</label>

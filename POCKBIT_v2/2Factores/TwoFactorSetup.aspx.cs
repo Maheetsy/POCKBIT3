@@ -17,6 +17,25 @@ namespace POCKBIT_v2._2Factores
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                // ... código de generación del QR ...
+
+                if (qrCodeImageControl.ImageUrl != null)
+                {
+                    Response.Write("<script>console.log('QR generado exitosamente.');</script>");
+                }
+                else
+                {
+                    Response.Write("<script>alert('No se generó el código QR.');</script>");
+                }
+            }
+            else if (ViewState["QrImage"] != null)
+            {
+                qrCodeImageControl.ImageUrl = "data:image/png;base64," + ViewState["QrImage"].ToString();
+            }
+
+
             if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
             {
                 Response.Redirect("~/Account/Login");
@@ -26,6 +45,7 @@ namespace POCKBIT_v2._2Factores
                 var user = User.Identity.Name; // Asumiendo que el nombre de usuario es el nombre del usuario logueado
                 var key = KeyGeneration.GenerateRandomKey(20);
                 var secret = Base32Encoder.Encode(key);
+                Response.Write("<script>console.log('Secreto generado: " + secret + "');</script>");
 
                 ViewState["Secret"] = secret;
 

@@ -13,10 +13,10 @@ namespace POCKBIT_v2.Paginas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            {
-                Response.Redirect("~/Account/Login");
-            }
+            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            //{
+            //    Response.Redirect("~/Account/Login");
+            //}
             if (!IsPostBack)
             {
                 lblYear.Text = DateTime.Now.Year.ToString();

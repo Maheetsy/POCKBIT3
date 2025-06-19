@@ -18,10 +18,10 @@ namespace POCKBIT_v2.Paginas
             {
                 LlenarDropDownLists();
             }
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            {
-                Response.Redirect("~/Account/Login");
-            }
+            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            //{
+            //    Response.Redirect("~/Account/Login");
+            //}
         }
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
@@ -229,7 +229,7 @@ namespace POCKBIT_v2.Paginas
         protected void GVVentas_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblId.Text = GVVentas.SelectedRow.Cells[1].Text.Trim();
-            txtCantidadV.Text = GVVentas.SelectedRow.Cells[4].Text.Trim();
+            txtCantidadV.Text = GVVentas.SelectedRow.Cells[5].Text.Trim();
         }
 
         protected void GVVentas_RowDataBound(object sender, GridViewRowEventArgs e)

@@ -110,43 +110,69 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
+                // Validar que todos los campos estén llenos
+                if (string.IsNullOrWhiteSpace(txtNombreC.Text) ||
+                    string.IsNullOrWhiteSpace(txtDescripcion.Text) ||
+                    string.IsNullOrWhiteSpace(txtCosto.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecioP.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecioV.Text) ||
+                    string.IsNullOrWhiteSpace(txtCodigoB.Text) ||
+                    ddlLaboratorio.SelectedIndex == -1 ||
+                    ddlEstado.SelectedIndex == -1)
+                {
+                    MostrarMensaje("Por favor, completa todos los campos antes de insertar.", "warning");
+                    return;
+                }
+
+                // Conversión de tipos
+                float costo = float.Parse(txtCosto.Text);
+                float precioMaximo = float.Parse(txtPrecioP.Text);
+                float precioVenta = float.Parse(txtPrecioV.Text);
+                int idLaboratorio = int.Parse(ddlLaboratorio.SelectedValue);
+                bool activo = ddlEstado.SelectedValue == "1";
+
                 using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarMedicamento", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@nombre", txtNombreC.Text);
-                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text);
-                        cmd.Parameters.AddWithValue("@costo", txtCosto.Text);
-                        cmd.Parameters.AddWithValue("@precio_maximo_publico", txtPrecioP.Text);
-                        cmd.Parameters.AddWithValue("@precio_venta", txtPrecioV.Text);
-                        cmd.Parameters.AddWithValue("@codigo_de_barras", txtCodigoB.Text);
-                        cmd.Parameters.AddWithValue("@id_laboratorio", ddlLaboratorio.SelectedValue);
+
+                        cmd.Parameters.AddWithValue("@nombre", txtNombreC.Text.Trim());
+                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@costo", costo);
+                        cmd.Parameters.AddWithValue("@precio_maximo_publico", precioMaximo);
+                        cmd.Parameters.AddWithValue("@precio_venta", precioVenta);
+                        cmd.Parameters.AddWithValue("@codigo_de_barras", txtCodigoB.Text.Trim());
+                        cmd.Parameters.AddWithValue("@id_laboratorio", idLaboratorio);
                         cmd.Parameters.AddWithValue("@fecha_de_registro", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
+                        cmd.Parameters.AddWithValue("@activo", activo);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
                             MostrarMensaje("Medicamento insertado correctamente.", "success");
+                            BorrarTxt();
+                            GVMedicamentos.DataBind();
                         }
                         else
                         {
-                            MostrarMensaje("No se insertó el medicamento.", "warning");
+                            MostrarMensaje("No se insertó el medicamento. Verifica los datos.", "warning");
                         }
                     }
-                    BorrarTxt();
-                    GVMedicamentos.DataBind();
                 }
             }
             catch (SqlException ex) when (ex.Number == 50000)
             {
                 MostrarMensaje("Error: Ya existe un medicamento con el mismo código de barras.", "warning");
             }
+            catch (FormatException)
+            {
+                MostrarMensaje("Error: Asegúrate de que costo y precios sean valores numéricos.", "danger");
+            }
             catch (Exception ex)
             {
-                MostrarMensaje("Error: " + ex.Message, "danger");
+                MostrarMensaje("Error inesperado: " + ex.Message, "danger");
             }
         }
 

@@ -351,6 +351,8 @@
     <Content Include="Paginas\medicamentos.aspx" />
     <Content Include="Paginas\prueba.aspx" />
     <Content Include="Paginas\ventas.aspx" />
+    <Content Include="README\ReadMe.txt" />
+    <Content Include="README\sql.sql" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />

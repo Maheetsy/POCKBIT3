@@ -13,11 +13,16 @@ namespace POCKBIT_v2.Paginas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                GVLotes.DataBind();
+            }
             if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
             {
                 Response.Redirect("~/Account/Login");
             }
         }
+   
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {

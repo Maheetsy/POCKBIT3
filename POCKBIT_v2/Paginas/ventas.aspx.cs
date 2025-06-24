@@ -71,7 +71,7 @@ namespace POCKBIT_v2.Paginas
         public void BorrarTxt()
         {
             txtCantidadV.Text = "";
-            ddlCodigoB.SelectedIndex = -1;
+            txtCodigoBarras.Text="";
             ddlLote.SelectedIndex = -1;
             lblId.Text = "";
         }
@@ -101,11 +101,13 @@ namespace POCKBIT_v2.Paginas
                     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>";
             ltlAlert.Text = alertHtml;
+
+            ltlAlert.Text = $"<div class='alert alert-{tipo} alert-dismissible fade show' role='alert'>{mensaje}<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
         }
 
         protected void LlenarDropDownLists()
         {
-            ddlCodigoB.DataBind();
+            //ddlCodigoB.DataBind();
             ddlLote.DataBind();
             GVVentas.DataBind();
         }
@@ -229,8 +231,50 @@ namespace POCKBIT_v2.Paginas
         protected void GVVentas_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblId.Text = GVVentas.SelectedRow.Cells[1].Text.Trim();
+            string codigo = GVVentas.SelectedRow.Cells[2].Text.Trim();
+            string loteTexto = GVVentas.SelectedRow.Cells[3].Text.Trim();
+
+            txtCodigoBarras.Text = codigo;
             txtCantidadV.Text = GVVentas.SelectedRow.Cells[5].Text.Trim();
+
+            // Obtener id_medicamento por el código de barras
+            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            {
+                conexion.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
+                {
+                    cmd.Parameters.AddWithValue("@codigo", codigo);
+                    object resultado = cmd.ExecuteScalar();
+
+                    if (resultado != null)
+                    {
+                        hiddenIdMedicamento.Value = resultado.ToString();
+
+                        // Recargar lotes
+                        ddlLote.DataBind();
+
+                        // Seleccionar el lote correspondiente
+                        ListItem item = ddlLote.Items.FindByText(loteTexto);
+                        if (item != null)
+                        {
+                            item.Selected = true;
+                        }
+                        else
+                        {
+                            MostrarMensaje("⚠️ Lote no disponible para este medicamento.", "warning");
+                        }
+                    }
+                    else
+                    {
+                        hiddenIdMedicamento.Value = string.Empty;
+                        ddlLote.Items.Clear();
+                        MostrarMensaje("⚠️ Producto no encontrado.", "danger");
+                    }
+                }
+            }
         }
+
+
 
         protected void GVVentas_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -243,5 +287,40 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
+        protected void txtCodigoBarras_TextChanged(object sender, EventArgs e)
+        {
+            string codigo = txtCodigoBarras.Text.Trim();
+
+            if (!string.IsNullOrEmpty(codigo))
+            {
+                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                {
+                    conexion.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@codigo", codigo);
+                        object resultado = cmd.ExecuteScalar();
+
+                        if (resultado != null)
+                        {
+                            string idMedicamento = resultado.ToString();
+
+                            hiddenIdMedicamento.Value = idMedicamento;
+
+                            ddlLote.DataBind(); // Recargar lotes del medicamento
+                            MostrarMensaje("✅ Producto encontrado. Selecciona el lote.", "success");
+                        }
+                        else
+                        {
+                            hiddenIdMedicamento.Value = string.Empty;
+                            ddlLote.Items.Clear(); // Limpiar lotes
+                            MostrarMensaje("⚠️ Producto no dado de alta aún.", "danger");
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 }

@@ -11,74 +11,74 @@
     <div class="card">
         <div class="card-body p-3">
             <div class="row mb-4">
-    <!-- COL 9: FORMULARIO -->
-    <div class="col-md-9">
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>ID:</label>
-                <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
+        <!-- COL 9: FORMULARIO -->
+        <div class="col-md-9">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>ID:</label>
+                    <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
+                </div>
+                <div class="col-md-4">
+                    <label>Código de Barras:</label>
+                    <asp:TextBox ID="txtCodigoBarras" runat="server" CssClass="form-control"
+                        AutoPostBack="true" OnTextChanged="txtCodigoBarras_TextChanged"
+                        placeholder="Escanea o escribe el código">
+                    </asp:TextBox>
+                    <asp:HiddenField ID="hiddenIdMedicamento" runat="server" />
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-80">
+                        📷 Escanear
+                    </button>
+                </div>
             </div>
-            <div class="col-md-4">
-                <label>Código de Barras:</label>
-                <asp:TextBox ID="txtCodigoBarras" runat="server" CssClass="form-control"
-                    AutoPostBack="true" OnTextChanged="txtCodigoBarras_TextChanged"
-                    placeholder="Escanea o escribe el código">
-                </asp:TextBox>
-                <asp:HiddenField ID="hiddenIdMedicamento" runat="server" />
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-                <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-80">
-                    📷 Escanear
-                </button>
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label>Seleccionar Lote:</label>
+                    <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select"
+                        DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SqlDataSourceLotes" runat="server" 
+                        ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
+                        SelectCommand="SELECT id_lote, numero_de_lote FROM lote WHERE (id_medicamento = @id_medicamento) AND (activo = 1) AND (cantidad > 0) ORDER BY id_lote DESC">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="hiddenIdMedicamento" PropertyName="Value" Name="id_medicamento" />
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                </div>
+                <div class="col-md-4">
+                    <label>Cantidad Vendida:</label>
+                    <asp:TextBox ID="txtCantidadV" runat="server" CssClass="form-control" Placeholder="Números enteros"></asp:TextBox>
+                </div>
+                <div class="col-md-4">
+                    <label>Descuento:</label>
+                    <asp:TextBox ID="txtDescuento" runat="server" CssClass="form-control" Placeholder="Función inactiva"></asp:TextBox>
+                </div>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>Seleccionar Lote:</label>
-                <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select"
-                    DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote">
-                </asp:DropDownList>
-                <asp:SqlDataSource ID="SqlDataSourceLotes" runat="server" 
-                    ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
-                    SelectCommand="SELECT id_lote, numero_de_lote FROM lote WHERE (id_medicamento = @id_medicamento) AND (activo = 1) AND (cantidad > 0) ORDER BY id_lote DESC">
-                    <SelectParameters>
-                        <asp:ControlParameter ControlID="hiddenIdMedicamento" PropertyName="Value" Name="id_medicamento" />
-                    </SelectParameters>
-                </asp:SqlDataSource>
-            </div>
-            <div class="col-md-4">
-                <label>Cantidad Vendida:</label>
-                <asp:TextBox ID="txtCantidadV" runat="server" CssClass="form-control" Placeholder="Números enteros"></asp:TextBox>
-            </div>
-            <div class="col-md-4">
-                <label>Descuento:</label>
-                <asp:TextBox ID="txtDescuento" runat="server" CssClass="form-control" Placeholder="Función inactiva"></asp:TextBox>
-            </div>
+
+        <!-- COL 3: ESCÁNER OCUPANDO LAS DOS FILAS -->
+        <div class="col-md-3 d-flex flex-column justify-content-between">
+            <label>Vista Escáner:</label>
+            <div id="reader" style="width:100%; height:100%; min-height:250px; border:1px solid #ccc; border-radius:6px;"></div>
         </div>
     </div>
 
-    <!-- COL 3: ESCÁNER OCUPANDO LAS DOS FILAS -->
-    <div class="col-md-3 d-flex flex-column justify-content-between">
-        <label>Vista Escáner:</label>
-        <div id="reader" style="width:100%; height:100%; min-height:250px; border:1px solid #ccc; border-radius:6px;"></div>
+    <!-- FILA DE BOTONES -->
+    <div class="row mb-3 text-center">
+        <div class="col-md-3">
+            <asp:Button ID="btnInsertar" runat="server" Text="Insertar" CssClass="btn btn-success w-100" OnClick="btnInsertar_Click" />
+        </div>
+        <div class="col-md-3">
+            <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-info w-100" OnClick="btnModificar_Click" />
+        </div>
+        <div class="col-md-3">
+            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger w-100" OnClick="btnEliminar_Click" />
+        </div>
+        <div class="col-md-3">
+            <asp:Button ID="btnExportarExcel" runat="server" Text="Exportar a Excel" CssClass="btn btn-primary w-100" OnClick="btnExportarExcel_Click" />
+        </div>
     </div>
-</div>
-
-<!-- FILA DE BOTONES -->
-<div class="row mb-3 text-center">
-    <div class="col-md-3">
-        <asp:Button ID="btnInsertar" runat="server" Text="Insertar" CssClass="btn btn-success w-100" OnClick="btnInsertar_Click" />
-    </div>
-    <div class="col-md-3">
-        <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-info w-100" OnClick="btnModificar_Click" />
-    </div>
-    <div class="col-md-3">
-        <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger w-100" OnClick="btnEliminar_Click" />
-    </div>
-    <div class="col-md-3">
-        <asp:Button ID="btnExportarExcel" runat="server" Text="Exportar a Excel" CssClass="btn btn-primary w-100" OnClick="btnExportarExcel_Click" />
-    </div>
-</div>
 
         </div>
     </div>

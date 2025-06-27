@@ -144,31 +144,30 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@id_medicamento", int.Parse(ddlCodigoB.SelectedValue));
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
-                        int rowsAffected = cmd.ExecuteNonQuery();
 
-                        if (rowsAffected > 0)
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            MostrarMensaje("Lote insertado correctamente.", "success");
-                        }
-                        else
-                        {
-                            MostrarMensaje("No se insertó el lote.", "warning");
+                            if (reader.Read())
+                            {
+                                string mensaje = reader["mensaje"].ToString();
+                                if (mensaje.StartsWith("Lote insertado correctamente"))
+                                    MostrarMensaje(mensaje, "success");
+                                else if (mensaje.StartsWith("Error"))
+                                    MostrarMensaje(mensaje, "warning");
+                                else
+                                    MostrarMensaje("No se insertó el lote.", "warning");
+                            }
                         }
                     }
                     BorrarTxt();
                     GVLotes.DataBind();
                 }
             }
-            catch (SqlException ex) when (ex.Number == 50001)
-            {
-                MostrarMensaje("Error: Ya existe un lote con el mismo número para este medicamento.", "warning");
-            }
             catch (Exception ex)
             {
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
-
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             try
@@ -187,24 +186,23 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            MostrarMensaje("Lote modificado correctamente.", "success");
-                        }
-                        else
-                        {
-                            MostrarMensaje("No se modificó el lote.", "warning");
+                            if (reader.Read())
+                            {
+                                string mensaje = reader["mensaje"].ToString();
+                                if (mensaje.StartsWith("Lote modificado correctamente"))
+                                    MostrarMensaje(mensaje, "success");
+                                else if (mensaje.StartsWith("Error"))
+                                    MostrarMensaje(mensaje, "warning");
+                                else
+                                    MostrarMensaje("No se modificó el lote.", "warning");
+                            }
                         }
                     }
                     BorrarTxt();
                     GVLotes.DataBind();
                 }
-            }
-            catch (SqlException ex) when (ex.Number == 50001)
-            {
-                MostrarMensaje("Error: Ya existe otro lote con el mismo número para este medicamento.", "warning");
             }
             catch (Exception ex)
             {
@@ -224,15 +222,18 @@ namespace POCKBIT_v2.Paginas
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id_lote", int.Parse(lblId.Text));
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-                            MostrarMensaje("Lote deshabilitado correctamente.", "success");
-                        }
-                        else
-                        {
-                            MostrarMensaje("No se deshabilitó el lote.", "warning");
+                            if (reader.Read())
+                            {
+                                string mensaje = reader["mensaje"].ToString();
+                                if (mensaje.StartsWith("Lote desactivado correctamente"))
+                                    MostrarMensaje(mensaje, "success");
+                                else if (mensaje.StartsWith("Error"))
+                                    MostrarMensaje(mensaje, "warning");
+                                else
+                                    MostrarMensaje("No se desactivó el lote.", "warning");
+                            }
                         }
                     }
                     BorrarTxt();

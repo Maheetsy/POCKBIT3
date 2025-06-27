@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace POCKBIT_v2.Paginas
 {
@@ -33,6 +34,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@nombre", txtNombreL.Text);
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.ExecuteNonQuery();
                     }
                     MostrarMensaje("Laboratorio insertado correctamente.", "success");
@@ -64,6 +66,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@id", lblId.Text);
                         cmd.Parameters.AddWithValue("@nombre", txtNombreL.Text);
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.ExecuteNonQuery();
                     }
                     MostrarMensaje("Laboratorio modificado correctamente.", "success");

@@ -51,6 +51,7 @@
                 <asp:BoundField DataField="id_laboratorio" HeaderText="ID" ReadOnly="True" InsertVisible="False" SortExpression="id_laboratorio"></asp:BoundField>
                 <asp:BoundField DataField="nombre" HeaderText="Nombre" SortExpression="nombre"></asp:BoundField>
                 <asp:CheckBoxField DataField="activo" HeaderText="Activo" SortExpression="activo"></asp:CheckBoxField>
+                 <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#2461BF"></EditRowStyle>
             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
@@ -64,5 +65,5 @@
             <SortedDescendingHeaderStyle BackColor="#4870BE"></SortedDescendingHeaderStyle>
         </asp:GridView>
     </div>
-    <asp:SqlDataSource runat="server" ID="SqlDataSourceLaboratorios" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT [id_laboratorio], [nombre], [activo] FROM [laboratorio] ORDER BY id_laboratorio DESC"></asp:SqlDataSource>
+    <asp:SqlDataSource runat="server" ID="SqlDataSourceLaboratorios" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT [id_laboratorio], [nombre], [activo], [realizado_por] FROM [laboratorio] ORDER BY id_laboratorio DESC"></asp:SqlDataSource>
 </asp:Content>

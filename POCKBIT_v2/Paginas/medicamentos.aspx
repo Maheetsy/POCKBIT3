@@ -102,6 +102,7 @@
                 </asp:BoundField>
                 <asp:BoundField DataField="fecha_de_registro" HeaderText="Fecha De Registro" SortExpression="fecha_de_registro" DataFormatString="{0:yyyy-MM-dd}"></asp:BoundField>
                 <asp:CheckBoxField DataField="activo" HeaderText="Activo" SortExpression="activo"></asp:CheckBoxField>
+                 <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#2461BF"></EditRowStyle>
             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
@@ -116,5 +117,5 @@
         </asp:GridView>
     </div>
 
-    <asp:SqlDataSource runat="server" ID="SqlDataSourceViewMedicamentos" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_medicamento, codigo_de_barras, nombre, descripcion, nombre_laboratorio, costo, precio_venta, precio_maximo_publico, cantidad_total, fecha_de_registro, activo FROM ViewMedicamento ORDER BY id_medicamento DESC"></asp:SqlDataSource>
+    <asp:SqlDataSource runat="server" ID="SqlDataSourceViewMedicamentos" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_medicamento, codigo_de_barras, nombre, descripcion, nombre_laboratorio, costo, precio_venta, precio_maximo_publico, cantidad_total, fecha_de_registro, activo, realizado_por FROM ViewMedicamento ORDER BY id_medicamento DESC"></asp:SqlDataSource>
 </asp:Content>

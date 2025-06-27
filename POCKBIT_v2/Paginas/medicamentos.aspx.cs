@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace POCKBIT_v2.Paginas
 {
@@ -13,10 +14,10 @@ namespace POCKBIT_v2.Paginas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            {
-                Response.Redirect("~/Account/Login");
-            }
+            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            //{
+            //    Response.Redirect("~/Account/Login");
+            //}
         }
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
@@ -49,7 +50,7 @@ namespace POCKBIT_v2.Paginas
             DataTable dt = new DataTable();
             using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento, codigo_de_barras, nombre, descripcion, nombre_laboratorio, costo, precio_venta, precio_maximo_publico, cantidad_total, fecha_de_registro, activo FROM ViewMedicamento ORDER BY id_medicamento DESC", conexion))
+                using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento, codigo_de_barras, nombre, descripcion, nombre_laboratorio, costo, precio_venta, precio_maximo_publico, cantidad_total, fecha_de_registro, activo,realizado_por FROM ViewMedicamento ORDER BY id_medicamento DESC", conexion))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -147,7 +148,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@id_laboratorio", idLaboratorio);
                         cmd.Parameters.AddWithValue("@fecha_de_registro", DateTime.Now);
                         cmd.Parameters.AddWithValue("@activo", activo);
-
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         int rowsAffected = cmd.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {
@@ -195,7 +196,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@codigo_de_barras", txtCodigoB.Text);
                         cmd.Parameters.AddWithValue("@id_laboratorio", ddlLaboratorio.SelectedValue);
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
-
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         int rowsAffected = cmd.ExecuteNonQuery();
                         if (rowsAffected > 0)
                         {

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace POCKBIT_v2.Paginas
 {
@@ -17,10 +18,10 @@ namespace POCKBIT_v2.Paginas
             {
                 GVLotes.DataBind();
             }
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            {
-                Response.Redirect("~/Account/Login");
-            }
+            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            //{
+            //    Response.Redirect("~/Account/Login");
+            //}
         }
    
 
@@ -142,7 +143,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@fecha_caducidad", txtFechaCaducidad.Value);
                         cmd.Parameters.AddWithValue("@id_medicamento", int.Parse(ddlCodigoB.SelectedValue));
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
-
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         int rowsAffected = cmd.ExecuteNonQuery();
 
                         if (rowsAffected > 0)
@@ -184,6 +185,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@fecha_caducidad", txtFechaCaducidad.Value);
                         cmd.Parameters.AddWithValue("@id_medicamento", int.Parse(ddlCodigoB.SelectedValue));
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
 
@@ -252,6 +254,7 @@ namespace POCKBIT_v2.Paginas
             txtFechaCaducidad.Value = row.Cells[7].Text.Trim();
 
             ddlEstado.SelectedValue = row.Cells[8].Text.Trim() == "True" ? "1" : "0";
+
         }
     }
 }

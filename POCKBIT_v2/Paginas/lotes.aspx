@@ -69,6 +69,7 @@
                 </asp:BoundField>
                 <asp:BoundField DataField="fecha_caducidad" HeaderText="Fecha De Caducidad" SortExpression="fecha_caducidad" DataFormatString="{0:yyyy-MM-dd}"></asp:BoundField>
                 <asp:CheckBoxField DataField="activo" HeaderText="Activo" SortExpression="activo"></asp:CheckBoxField>
+                 <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#2461BF"></EditRowStyle>
             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
@@ -82,6 +83,6 @@
             <SortedDescendingHeaderStyle BackColor="#4870BE"></SortedDescendingHeaderStyle>
         </asp:GridView>
     </div>
-    <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT lote.id_lote, medicamento.codigo_de_barras, lote.numero_de_lote, medicamento.nombre, medicamento.descripcion, lote.cantidad, lote.fecha_caducidad, lote.activo FROM laboratorio INNER JOIN medicamento ON laboratorio.id_laboratorio = medicamento.id_laboratorio INNER JOIN lote ON medicamento.id_medicamento = lote.id_medicamento WHERE (laboratorio.activo = 1) ORDER BY lote.id_lote DESC"></asp:SqlDataSource>
+    <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT lote.id_lote, medicamento.codigo_de_barras, lote.numero_de_lote, medicamento.nombre, medicamento.descripcion, lote.cantidad, lote.fecha_caducidad, lote.activo, lote.realizado_por FROM laboratorio INNER JOIN medicamento ON laboratorio.id_laboratorio = medicamento.id_laboratorio INNER JOIN lote ON medicamento.id_medicamento = lote.id_medicamento WHERE (laboratorio.activo = 1) ORDER BY lote.id_lote DESC"></asp:SqlDataSource>
 </asp:Content>
 

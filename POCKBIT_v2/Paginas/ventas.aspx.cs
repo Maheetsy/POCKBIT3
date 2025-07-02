@@ -111,7 +111,6 @@ namespace POCKBIT_v2.Paginas
             ddlLote.DataBind();
             GVVentas.DataBind();
         }
-
         protected void btnInsertar_Click(object sender, EventArgs e)
         {
             try
@@ -127,31 +126,26 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.Parameters.AddWithValue("@fecha_de_salida", DateTime.Now);
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int resultado = reader.GetInt32(reader.GetOrdinal("Resultado"));
+                                string mensaje = reader.GetString(reader.GetOrdinal("Mensaje"));
 
-                        if (rowsAffected > 0)
-                        {
-                            MostrarMensaje("Venta registrada correctamente.", "success");
-                        }
-                        else
-                        {
-                            MostrarMensaje("No se registró la venta.", "warning");
+                                MostrarMensaje(mensaje, resultado == 1 ? "success" : "danger");
+                            }
                         }
                     }
                     BorrarTxt();
                     LlenarDropDownLists();
                 }
             }
-            catch (SqlException ex) when (ex.Number == 50001)
-            {
-                MostrarMensaje("No hay suficiente cantidad en el inventario.", "danger");
-            }
             catch (Exception ex)
             {
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
-
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             try
@@ -168,31 +162,26 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.Parameters.AddWithValue("@fecha_de_salida", DateTime.Now);
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                int resultado = reader.GetInt32(reader.GetOrdinal("Resultado"));
+                                string mensaje = reader.GetString(reader.GetOrdinal("Mensaje"));
 
-                        if (rowsAffected > 0)
-                        {
-                            MostrarMensaje("Venta modificada correctamente.", "success");
-                        }
-                        else
-                        {
-                            MostrarMensaje("No se modificó la venta.", "warning");
+                                MostrarMensaje(mensaje, resultado == 1 ? "success" : "danger");
+                            }
                         }
                     }
                     BorrarTxt();
                     LlenarDropDownLists();
                 }
             }
-            catch (SqlException ex) when (ex.Number == 50001)
-            {
-                MostrarMensaje("No hay suficiente cantidad en el inventario.", "danger");
-            }
             catch (Exception ex)
             {
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
-
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try

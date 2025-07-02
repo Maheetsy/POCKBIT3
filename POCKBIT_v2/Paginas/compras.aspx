@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-md-3 mb-3">
                         <label class="form-control-label">Seleccionar Lote:</label>
-                        <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select" DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote"></asp:DropDownList>
+                        <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select" DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote" ></asp:DropDownList>
                         <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_lote, numero_de_lote FROM lote WHERE (id_medicamento = @id_medicamento) AND (activo = 1) ORDER BY id_lote DESC">
                             <SelectParameters>
                                 <asp:ControlParameter ControlID="ddlCodigoB" PropertyName="SelectedValue" Name="id_medicamento"></asp:ControlParameter>
@@ -75,7 +75,7 @@
             </Columns>
             <EditRowStyle BackColor="#2461BF"></EditRowStyle>
             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
-            <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White"></HeaderStyle>
+            <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White" ></HeaderStyle>
             <PagerStyle HorizontalAlign="Center" BackColor="#2461BF" ForeColor="White"></PagerStyle>
             <RowStyle BackColor="#EFF3FB"></RowStyle>
             <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333"></SelectedRowStyle>

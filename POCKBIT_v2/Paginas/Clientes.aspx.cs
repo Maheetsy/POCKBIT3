@@ -10,13 +10,13 @@ using ClosedXML.Excel;
 
 namespace POCKBIT_v2.Paginas
 {
-    public partial class compras : System.Web.UI.Page
+    public partial class Clientes : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LlenarDropDownLists();
+                GVClientes.DataBind();
             }
 
             //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
@@ -25,13 +25,12 @@ namespace POCKBIT_v2.Paginas
             //}
         }
 
-
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {
-            DataTable dt = GetAllCompras();
+            DataTable dt = GetAllClientes();
             using (XLWorkbook wb = new XLWorkbook())
             {
-                var ws = wb.Worksheets.Add(dt, "Compras");
+                var ws = wb.Worksheets.Add(dt, "Clientes");
                 var headerRow = ws.Row(1);
                 headerRow.Style.Font.Bold = true;
                 headerRow.Style.Fill.BackgroundColor = XLColor.AirForceBlue;
@@ -41,7 +40,7 @@ namespace POCKBIT_v2.Paginas
                 Response.Buffer = true;
                 Response.Charset = "";
                 Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=Compras.xlsx");
+                Response.AddHeader("content-disposition", "attachment;filename=Clientes.xlsx");
                 using (MemoryStream memoryStream = new MemoryStream())
                 {
                     wb.SaveAs(memoryStream);
@@ -52,12 +51,12 @@ namespace POCKBIT_v2.Paginas
             }
         }
 
-        private DataTable GetAllCompras()
+        private DataTable GetAllClientes()
         {
             DataTable dt = new DataTable();
             using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
             {
-                string query = "SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por FROM ViewCompra ORDER BY id_compra DESC";
+                string query = "SELECT id_cliente, nombre, direccion, telefono, email, fecha_registro, activo FROM ViewCliente ORDER BY id_cliente DESC";
                 using (SqlCommand cmd = new SqlCommand(query, conexion))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -69,12 +68,14 @@ namespace POCKBIT_v2.Paginas
             return dt;
         }
 
-        public void BorrarTxt()
+        public void BorrarCampos()
         {
-            txtCantidadC.Text = "";
-            ddlCodigoB.SelectedIndex = -1;
-            ddlLote.SelectedIndex = -1;
-            lblId.Text = "";
+            lblIdCliente.Text = "";
+            txtNombre.Text = "";
+            txtDireccion.Text = "";
+            txtTelefono.Text = "";
+            txtEmail.Text = "";
+            ddlEstado.SelectedIndex = 0;
         }
 
         public string Get_ConnectionString()
@@ -104,12 +105,6 @@ namespace POCKBIT_v2.Paginas
             ltlAlert.Text = alertHtml;
         }
 
-        protected void LlenarDropDownLists()
-        {
-            ddlCodigoB.DataBind();
-            ddlLote.DataBind();
-            GVCompras.DataBind();
-        }
         protected void btnInsertar_Click(object sender, EventArgs e)
         {
             try
@@ -117,15 +112,16 @@ namespace POCKBIT_v2.Paginas
                 using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
                 {
                     conexion.Open();
-                    using (SqlCommand cmd = new SqlCommand("sp_InsertarCompra", conexion))
+                    using (SqlCommand cmd = new SqlCommand("sp_InsertarCliente", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@id_lote", int.Parse(ddlLote.SelectedValue));
-                        cmd.Parameters.AddWithValue("@cantidad", int.Parse(txtCantidadC.Text));
+                        cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
+                        cmd.Parameters.AddWithValue("@direccion", txtDireccion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@telefono", txtTelefono.Text.Trim());
+                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
+                        cmd.Parameters.AddWithValue("@activo", Convert.ToBoolean(ddlEstado.SelectedValue));
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
-                        cmd.Parameters.AddWithValue("@fecha_de_entrada", DateTime.Now);
 
-                        // Cambiar para leer el mensaje de retorno
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -135,8 +131,8 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
-                    BorrarTxt();
-                    LlenarDropDownLists();
+                    BorrarCampos();
+                    GVClientes.DataBind();
                 }
             }
             catch (Exception ex)
@@ -149,19 +145,26 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
+                if (string.IsNullOrEmpty(lblIdCliente.Text))
+                {
+                    MostrarMensaje("Debe seleccionar un cliente primero", "warning");
+                    return;
+                }
+
                 using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
                 {
                     conexion.Open();
-                    using (SqlCommand cmd = new SqlCommand("sp_ActualizarCompra", conexion))
+                    using (SqlCommand cmd = new SqlCommand("sp_ActualizarCliente", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@id_compra", int.Parse(lblId.Text));
-                        cmd.Parameters.AddWithValue("@id_lote", int.Parse(ddlLote.SelectedValue));
-                        cmd.Parameters.AddWithValue("@cantidad", int.Parse(txtCantidadC.Text));
+                        cmd.Parameters.AddWithValue("@id_cliente", int.Parse(lblIdCliente.Text));
+                        cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
+                        cmd.Parameters.AddWithValue("@direccion", txtDireccion.Text.Trim());
+                        cmd.Parameters.AddWithValue("@telefono", txtTelefono.Text.Trim());
+                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
+                        cmd.Parameters.AddWithValue("@activo", Convert.ToBoolean(ddlEstado.SelectedValue));
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
-                        cmd.Parameters.AddWithValue("@fecha_de_entrada", DateTime.Now);
 
-                        // Cambiar para leer el mensaje de retorno
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -171,8 +174,8 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
-                    BorrarTxt();
-                    LlenarDropDownLists();
+                    BorrarCampos();
+                    GVClientes.DataBind();
                 }
             }
             catch (Exception ex)
@@ -185,15 +188,21 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
+                if (string.IsNullOrEmpty(lblIdCliente.Text))
+                {
+                    MostrarMensaje("Debe seleccionar un cliente primero", "warning");
+                    return;
+                }
+
                 using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
                 {
                     conexion.Open();
-                    using (SqlCommand cmd = new SqlCommand("sp_EliminarCompra", conexion))
+                    using (SqlCommand cmd = new SqlCommand("sp_EliminarCliente", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@id_compra", int.Parse(lblId.Text));
+                        cmd.Parameters.AddWithValue("@id_cliente", int.Parse(lblIdCliente.Text));
+                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
-                        // Cambiar para leer el mensaje de retorno
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -203,8 +212,8 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
-                    BorrarTxt();
-                    LlenarDropDownLists();
+                    BorrarCampos();
+                    GVClientes.DataBind();
                 }
             }
             catch (Exception ex)
@@ -212,45 +221,23 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
-        protected void GVCompras_SelectedIndexChanged(object sender, EventArgs e)
+
+        protected void GVClientes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GridViewRow row = GVCompras.SelectedRow;
+            GridViewRow row = GVClientes.SelectedRow;
 
-            lblId.Text = row.Cells[1].Text.Trim();
-            txtCantidadC.Text = row.Cells[6].Text.Trim();
+            lblIdCliente.Text = row.Cells[1].Text.Trim(); // ID
+            txtNombre.Text = row.Cells[2].Text.Trim(); // Nombre
+            txtDireccion.Text = row.Cells[3].Text.Trim(); // Dirección
+            txtTelefono.Text = row.Cells[4].Text.Trim(); // Teléfono
+            txtEmail.Text = row.Cells[5].Text.Trim(); // Email
 
-            // Obtener los valores reales desde las celdas
-            string codigoBarras = row.Cells[2].Text.Trim();
-            string numeroLote = row.Cells[3].Text.Trim();
-
-            // Seleccionar el medicamento correcto en ddlCodigoB
-            foreach (ListItem item in ddlCodigoB.Items)
-            {
-                if (item.Text == codigoBarras)
-                {
-                    ddlCodigoB.ClearSelection();
-                    item.Selected = true;
-                    break;
-                }
-            }
-
-            // Re-bind para cargar los lotes del medicamento seleccionado
-            ddlLote.DataBind();
-
-            // Seleccionar el lote correcto en ddlLote
-            foreach (ListItem item in ddlLote.Items)
-            {
-                if (item.Text == numeroLote)
-                {
-                    ddlLote.ClearSelection();
-                    item.Selected = true;
-                    break;
-                }
-            }
+            // Estado (convertir de "True"/"False" a valor del DropDownList)
+            string estado = row.Cells[7].Text.Trim();
+            ddlEstado.SelectedValue = estado.Equals("True", StringComparison.OrdinalIgnoreCase) ? "1" : "0";
         }
 
-
-        protected void GVCompras_RowDataBound(object sender, GridViewRowEventArgs e)
+        protected void GVClientes_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
@@ -263,4 +250,3 @@ namespace POCKBIT_v2.Paginas
         }
     }
 }
-

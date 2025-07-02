@@ -344,12 +344,14 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Paginas\Clientes.aspx" />
     <Content Include="Paginas\compras.aspx" />
     <Content Include="Paginas\dashboard.aspx" />
     <Content Include="Paginas\laboratorios.aspx" />
     <Content Include="Paginas\lotes.aspx" />
     <Content Include="Paginas\medicamentos.aspx" />
     <Content Include="Paginas\prueba.aspx" />
+    <Content Include="Paginas\Roles.aspx" />
     <Content Include="Paginas\ventas.aspx" />
     <Content Include="README\ReadMe.txt" />
     <Content Include="README\sql.sql" />
@@ -572,6 +574,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Paginas\Clientes.aspx.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Paginas\Clientes.aspx.designer.cs">
+      <DependentUpon>Clientes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Paginas\compras.aspx.cs">
       <DependentUpon>compras.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -613,6 +622,13 @@
     </Compile>
     <Compile Include="Paginas\prueba.aspx.designer.cs">
       <DependentUpon>prueba.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Paginas\Roles.aspx.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Paginas\Roles.aspx.designer.cs">
+      <DependentUpon>Roles.aspx</DependentUpon>
     </Compile>
     <Compile Include="Paginas\ventas.aspx.cs">
       <DependentUpon>ventas.aspx</DependentUpon>

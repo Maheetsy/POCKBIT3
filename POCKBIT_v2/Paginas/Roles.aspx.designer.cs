@@ -11,133 +11,106 @@ namespace POCKBIT_v2.Paginas
 {
 
 
-    public partial class compras
+    public partial class Roles
     {
 
         /// <summary>
-        /// ltlAlert control.
+        /// ddlUsuarios control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltlAlert;
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsuarios;
 
         /// <summary>
-        /// lblId control.
+        /// ddlRoles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblId;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRoles;
 
         /// <summary>
-        /// ddlCodigoB control.
+        /// btnAsignarRol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCodigoB;
+        protected global::System.Web.UI.WebControls.Button btnAsignarRol;
 
         /// <summary>
-        /// SqlDataSourceCodigosBarras control.
+        /// txtNuevoRol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceCodigosBarras;
+        protected global::System.Web.UI.WebControls.TextBox txtNuevoRol;
 
         /// <summary>
-        /// ddlLote control.
+        /// btnAgregarRol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlLote;
+        protected global::System.Web.UI.WebControls.Button btnAgregarRol;
 
         /// <summary>
-        /// SqlDataSourceLotes control.
+        /// ddlRolesEliminar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceLotes;
+        protected global::System.Web.UI.WebControls.DropDownList ddlRolesEliminar;
 
         /// <summary>
-        /// txtCantidadC control.
+        /// btnEliminarRol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCantidadC;
+        protected global::System.Web.UI.WebControls.Button btnEliminarRol;
 
         /// <summary>
-        /// txtDescuento control.
+        /// gvUsuariosRoles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescuento;
+        protected global::System.Web.UI.WebControls.GridView gvUsuariosRoles;
 
         /// <summary>
-        /// btnInsertar control.
+        /// gvRoles control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnInsertar;
+        protected global::System.Web.UI.WebControls.GridView gvRoles;
 
         /// <summary>
-        /// btnModificar control.
+        /// pnlMensaje control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnModificar;
+        protected global::System.Web.UI.WebControls.Panel pnlMensaje;
 
         /// <summary>
-        /// btnEliminar control.
+        /// lblMensaje control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEliminar;
-
-        /// <summary>
-        /// btnExportarExcel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExportarExcel;
-
-        /// <summary>
-        /// GVCompras control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GVCompras;
-
-        /// <summary>
-        /// SqlDataSourceCompras control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceCompras;
+        protected global::System.Web.UI.WebControls.Label lblMensaje;
     }
 }

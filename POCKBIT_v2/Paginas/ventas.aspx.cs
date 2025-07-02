@@ -274,8 +274,6 @@ namespace POCKBIT_v2.Paginas
             }
         }
 
-
-
         protected void GVVentas_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)

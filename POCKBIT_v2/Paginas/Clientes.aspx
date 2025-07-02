@@ -32,12 +32,13 @@
                         <label class="form-control-label">Email:</label>
                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
                     </div>
-                    <div class="col-md-3 mb-3">
+                   <div class="col-md-3 mb-3">
                         <label class="form-control-label">Estado:</label>
                         <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Activo" Value="1" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
                             <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
                         </asp:DropDownList>
+                   
                     </div>
                 </div>
 

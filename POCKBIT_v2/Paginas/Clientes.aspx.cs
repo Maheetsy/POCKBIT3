@@ -119,9 +119,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@direccion", txtDireccion.Text.Trim());
                         cmd.Parameters.AddWithValue("@telefono", txtTelefono.Text.Trim());
                         cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
-                        cmd.Parameters.AddWithValue("@activo", Convert.ToBoolean(ddlEstado.SelectedValue));
-                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
-
+                        cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -161,9 +159,8 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@direccion", txtDireccion.Text.Trim());
                         cmd.Parameters.AddWithValue("@telefono", txtTelefono.Text.Trim());
-                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
-                        cmd.Parameters.AddWithValue("@activo", Convert.ToBoolean(ddlEstado.SelectedValue));
-                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
+                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim()); 
+                        cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -201,7 +198,6 @@ namespace POCKBIT_v2.Paginas
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id_cliente", int.Parse(lblIdCliente.Text));
-                        cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -231,10 +227,7 @@ namespace POCKBIT_v2.Paginas
             txtDireccion.Text = row.Cells[3].Text.Trim(); // Dirección
             txtTelefono.Text = row.Cells[4].Text.Trim(); // Teléfono
             txtEmail.Text = row.Cells[5].Text.Trim(); // Email
-
-            // Estado (convertir de "True"/"False" a valor del DropDownList)
-            string estado = row.Cells[7].Text.Trim();
-            ddlEstado.SelectedValue = estado.Equals("True", StringComparison.OrdinalIgnoreCase) ? "1" : "0";
+            ddlEstado.SelectedValue = row.Cells[6].Text.Trim() == "True" ? "1" : "0";
         }
 
         protected void GVClientes_RowDataBound(object sender, GridViewRowEventArgs e)

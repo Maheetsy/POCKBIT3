@@ -17,11 +17,14 @@ namespace POCKBIT_v2.Paginas
             if (!IsPostBack)
             {
                 LlenarDropDownLists();
+                CargarClientes(); // Nuevo método para cargar clientes
             }
-            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            //{
-            //    Response.Redirect("~/Account/Login");
-            //}
+        }
+
+        // Nuevo método para cargar clientes
+        private void CargarClientes()
+        {
+            ddlCliente.DataBind(); // Esto cargará los clientes desde el SqlDataSource
         }
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
@@ -56,7 +59,15 @@ namespace POCKBIT_v2.Paginas
             DataTable dt = new DataTable();
             using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
             {
-                string query = "SELECT id_venta, codigo_de_barras, numero_de_lote, nombre, cantidad, precio_venta_total, costo_venta, ganancia_total, fecha_de_salida, realizado_por FROM ViewVenta ORDER BY id_venta DESC";
+                string query = @"SELECT v.id_venta, m.codigo_de_barras, l.numero_de_lote, m.nombre, 
+                       v.cantidad, v.precio_venta_total, v.costo_venta, v.ganancia_total, 
+                       v.fecha_de_salida, v.realizado_por, 
+                       ISNULL(c.nombre, 'Público en general') AS nombre_cliente
+                       FROM venta v
+                       INNER JOIN lote l ON v.id_lote = l.id_lote
+                       INNER JOIN medicamento m ON l.id_medicamento = m.id_medicamento
+                       LEFT OUTER JOIN cliente c ON v.id_cliente = c.id_cliente
+                       ORDER BY v.id_venta DESC";
                 using (SqlCommand cmd = new SqlCommand(query, conexion))
                 {
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -67,12 +78,12 @@ namespace POCKBIT_v2.Paginas
             }
             return dt;
         }
-
         public void BorrarTxt()
         {
             txtCantidadV.Text = "";
-            txtCodigoBarras.Text="";
+            txtCodigoBarras.Text = "";
             ddlLote.SelectedIndex = -1;
+            ddlCliente.SelectedIndex = 0; // Seleccionar "Público en general"
             lblId.Text = "";
         }
 
@@ -101,16 +112,14 @@ namespace POCKBIT_v2.Paginas
                     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
                 </div>";
             ltlAlert.Text = alertHtml;
-
-            ltlAlert.Text = $"<div class='alert alert-{tipo} alert-dismissible fade show' role='alert'>{mensaje}<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button></div>";
         }
 
         protected void LlenarDropDownLists()
         {
-            //ddlCodigoB.DataBind();
             ddlLote.DataBind();
             GVVentas.DataBind();
         }
+
         protected void btnInsertar_Click(object sender, EventArgs e)
         {
             try
@@ -125,6 +134,16 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@cantidad", int.Parse(txtCantidadV.Text));
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.Parameters.AddWithValue("@fecha_de_salida", DateTime.Now);
+
+                        // Nuevo parámetro para el cliente
+                        if (!string.IsNullOrEmpty(ddlCliente.SelectedValue))
+                        {
+                            cmd.Parameters.AddWithValue("@id_cliente", int.Parse(ddlCliente.SelectedValue));
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@id_cliente", DBNull.Value);
+                        }
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -146,6 +165,7 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
+
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             try
@@ -162,6 +182,16 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.Parameters.AddWithValue("@fecha_de_salida", DateTime.Now);
 
+                        // Nuevo parámetro para el cliente
+                        if (!string.IsNullOrEmpty(ddlCliente.SelectedValue))
+                        {
+                            cmd.Parameters.AddWithValue("@id_cliente", int.Parse(ddlCliente.SelectedValue));
+                        }
+                        else
+                        {
+                            cmd.Parameters.AddWithValue("@id_cliente", DBNull.Value);
+                        }
+
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
@@ -182,6 +212,7 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
+
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try
@@ -243,6 +274,7 @@ namespace POCKBIT_v2.Paginas
                         ddlLote.DataBind();
 
                         // Seleccionar el lote correspondiente
+                        ddlLote.ClearSelection(); // Limpiar selección previa
                         ListItem item = ddlLote.Items.FindByText(loteTexto);
                         if (item != null)
                         {
@@ -260,9 +292,34 @@ namespace POCKBIT_v2.Paginas
                         MostrarMensaje("⚠️ Producto no encontrado.", "danger");
                     }
                 }
+
+                // Obtener y seleccionar el cliente asociado a la venta
+                using (SqlCommand cmd = new SqlCommand("SELECT id_cliente FROM venta WHERE id_venta = @id_venta", conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id_venta", lblId.Text);
+                    object idCliente = cmd.ExecuteScalar();
+
+                    ddlCliente.ClearSelection(); // Limpiar selección previa
+
+                    if (idCliente != null && idCliente != DBNull.Value)
+                    {
+                        ListItem item = ddlCliente.Items.FindByValue(idCliente.ToString());
+                        if (item != null)
+                        {
+                            item.Selected = true;
+                        }
+                    }
+                    else
+                    {
+                        // Seleccionar "Público en general" (primer ítem)
+                        if (ddlCliente.Items.Count > 0)
+                        {
+                            ddlCliente.Items[0].Selected = true;
+                        }
+                    }
+                }
             }
         }
-
         protected void GVVentas_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -274,6 +331,7 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
+
         protected void txtCodigoBarras_TextChanged(object sender, EventArgs e)
         {
             string codigo = txtCodigoBarras.Text.Trim();
@@ -307,7 +365,5 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
-
-
     }
 }

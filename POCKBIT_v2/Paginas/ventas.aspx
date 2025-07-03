@@ -50,10 +50,17 @@
                     <label>Cantidad Vendida:</label>
                     <asp:TextBox ID="txtCantidadV" runat="server" CssClass="form-control" Placeholder="Números enteros"></asp:TextBox>
                 </div>
-                <div class="col-md-4">
-                    <label>Descuento:</label>
-                    <asp:TextBox ID="txtDescuento" runat="server" CssClass="form-control" Placeholder="Función inactiva"></asp:TextBox>
-                </div>
+              <div class="col-md-4">
+                <label class="form-label">Cliente:</label>
+                <asp:DropDownList ID="ddlCliente" runat="server" CssClass="form-select"
+                    DataSourceID="SqlDataSourceClientes" DataTextField="nombre" DataValueField="id_cliente" AppendDataBoundItems="true">
+                    <asp:ListItem Value="" Text="Público en general" Selected="True"></asp:ListItem>
+                </asp:DropDownList>
+                <asp:SqlDataSource ID="SqlDataSourceClientes" runat="server" 
+                    ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
+                    SelectCommand="SELECT id_cliente, nombre FROM cliente WHERE (activo = 1) ORDER BY nombre">
+                </asp:SqlDataSource>
+            </div>
             </div>
         </div>
 
@@ -87,36 +94,47 @@
 
     <br />
     <div class="table-responsive rounded-3">
-        <asp:GridView ID="GVVentas" runat="server" CssClass="table custom-table" DataSourceID="SqlDataSourceVentas" AutoGenerateColumns="False" DataKeyNames="id_venta" AllowSorting="True" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="GVVentas_SelectedIndexChanged" OnRowDataBound="GVVentas_RowDataBound" AllowPaging="True">
-            <AlternatingRowStyle BackColor="White"></AlternatingRowStyle>
-            <Columns>
-                <asp:CommandField ShowSelectButton="True" ButtonType="Button"></asp:CommandField>
-                <asp:BoundField DataField="id_venta" HeaderText="ID" ReadOnly="True" SortExpression="id_venta"></asp:BoundField>
-                <asp:BoundField DataField="codigo_de_barras" HeaderText="Código De Barras" SortExpression="codigo_de_barras"></asp:BoundField>
-                <asp:BoundField DataField="numero_de_lote" HeaderText="Número De Lote" SortExpression="numero_de_lote"></asp:BoundField>
-                <asp:BoundField DataField="nombre" HeaderText="Nombre" SortExpression="nombre"></asp:BoundField>
-                <asp:BoundField DataField="cantidad" HeaderText="Cantidad" SortExpression="cantidad">
-                    <ItemStyle HorizontalAlign="Center" />
-                </asp:BoundField>
-                <asp:BoundField DataField="costo_venta" HeaderText="Costo De Venta" SortExpression="costo_venta" DataFormatString="{0:C2}" HtmlEncode="false"></asp:BoundField>
-                <asp:BoundField DataField="precio_venta_total" HeaderText="Total De Venta" SortExpression="precio_venta_total" DataFormatString="{0:C2}" HtmlEncode="false"></asp:BoundField>
-                <asp:BoundField DataField="ganancia_total" HeaderText="Ganancia Total" SortExpression="ganancia_total" DataFormatString="{0:C2}" HtmlEncode="false"></asp:BoundField>
-                <asp:BoundField DataField="fecha_de_salida" HeaderText="Fecha De Venta" SortExpression="fecha_de_salida" DataFormatString="{0:yyyy-MM-dd}"></asp:BoundField>
-                <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
-            </Columns>
-            <EditRowStyle BackColor="#2461BF"></EditRowStyle>
-            <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
-            <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White"></HeaderStyle>
-            <PagerStyle HorizontalAlign="Center" BackColor="#2461BF" ForeColor="White"></PagerStyle>
-            <RowStyle BackColor="#EFF3FB"></RowStyle>
-            <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333"></SelectedRowStyle>
-            <SortedAscendingCellStyle BackColor="#F5F7FB"></SortedAscendingCellStyle>
-            <SortedAscendingHeaderStyle BackColor="#6D95E1"></SortedAscendingHeaderStyle>
-            <SortedDescendingCellStyle BackColor="#E9EBEF"></SortedDescendingCellStyle>
-            <SortedDescendingHeaderStyle BackColor="#4870BE"></SortedDescendingHeaderStyle>
-        </asp:GridView>
+       <asp:GridView ID="GVVentas" runat="server" CssClass="table custom-table" DataSourceID="SqlDataSourceVentas" AutoGenerateColumns="False" DataKeyNames="id_venta" AllowSorting="True"  CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="GVVentas_SelectedIndexChanged" OnRowDataBound="GVVentas_RowDataBound" AllowPaging="True">
+    <AlternatingRowStyle BackColor="White"></AlternatingRowStyle>
+    <Columns>
+        <asp:CommandField ShowSelectButton="True" ButtonType="Button"></asp:CommandField>
+        <asp:BoundField DataField="id_venta" HeaderText="ID" SortExpression="id_venta"/>
+        <asp:BoundField DataField="codigo_de_barras" HeaderText="Código" SortExpression="codigo_de_barras"/>
+        <asp:BoundField DataField="numero_de_lote" HeaderText="Lote" SortExpression="numero_de_lote"/>
+        <asp:BoundField DataField="nombre" HeaderText="Producto" SortExpression="nombre"/>
+        <asp:BoundField DataField="cantidad" HeaderText="Cantidad" SortExpression="cantidad"/>
+        <asp:BoundField DataField="precio_venta_total" HeaderText="Precio Total" DataFormatString="{0:C}" SortExpression="precio_venta_total"/>
+        <asp:BoundField DataField="costo_venta" HeaderText="Costo" DataFormatString="{0:C}" SortExpression="costo_venta"/>
+        <asp:BoundField DataField="ganancia_total" HeaderText="Ganancia" DataFormatString="{0:C}" SortExpression="ganancia_total"/>
+        <asp:BoundField DataField="fecha_de_salida" HeaderText="Fecha" DataFormatString="{0:g}" SortExpression="fecha_de_salida"/>
+        <asp:BoundField DataField="realizado_por" HeaderText="Realizado por" SortExpression="realizado_por"/>
+        <asp:BoundField DataField="nombre_cliente" HeaderText="Cliente" SortExpression="nombre_cliente"/>
+    </Columns>
+    <EditRowStyle BackColor="#2461BF"></EditRowStyle>
+    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>
+    <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White"></HeaderStyle>
+    <PagerStyle HorizontalAlign="Center" BackColor="#2461BF" ForeColor="White"></PagerStyle>
+    <RowStyle BackColor="#EFF3FB"></RowStyle>
+    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333"></SelectedRowStyle>
+    <SortedAscendingCellStyle BackColor="#F5F7FB"></SortedAscendingCellStyle>
+    <SortedAscendingHeaderStyle BackColor="#6D95E1"></SortedAscendingHeaderStyle>
+    <SortedDescendingCellStyle BackColor="#E9EBEF"></SortedDescendingCellStyle>
+    <SortedDescendingHeaderStyle BackColor="#4870BE"></SortedDescendingHeaderStyle>
+</asp:GridView>
+
     </div>
-    <asp:SqlDataSource runat="server" ID="SqlDataSourceVentas" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_venta, codigo_de_barras, numero_de_lote, nombre, cantidad, precio_venta_total, costo_venta, ganancia_total, fecha_de_salida, realizado_por FROM ViewVenta ORDER BY id_venta DESC"></asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSourceVentas" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:DefaultConnection %>"
+    SelectCommand="SELECT v.id_venta, m.codigo_de_barras, l.numero_de_lote, m.nombre, 
+                  v.cantidad, v.precio_venta_total, v.costo_venta, v.ganancia_total, 
+                  v.fecha_de_salida, v.realizado_por, 
+                  ISNULL(c.nombre, 'Público en general') AS nombre_cliente
+                  FROM venta v
+                  INNER JOIN lote l ON v.id_lote = l.id_lote
+                  INNER JOIN medicamento m ON l.id_medicamento = m.id_medicamento
+                  LEFT OUTER JOIN cliente c ON v.id_cliente = c.id_cliente
+                  ORDER BY v.id_venta DESC">
+</asp:SqlDataSource>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
     function iniciarEscaneo() {

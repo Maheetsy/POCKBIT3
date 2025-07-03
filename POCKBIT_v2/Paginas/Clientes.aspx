@@ -62,7 +62,7 @@
 
     <br />
     <div class="table-responsive rounded-3">
-    <asp:GridView ID="GVClientes" runat="server" CssClass="table custom-table" CellPadding="4" ForeColor="#333333" GridLines="None"
+    <asp:GridView ID="GVClientes" runat="server" CssClass="table custom-table" AllowSorting="true" CellPadding="4" ForeColor="#333333" GridLines="None"
         AutoGenerateColumns="False" DataKeyNames="id_cliente" DataSourceID="SqlDataSourceClientes"
         AllowPaging="True" PageSize="10" OnSelectedIndexChanged="GVClientes_SelectedIndexChanged" OnRowDataBound="GVClientes_RowDataBound">
         <AlternatingRowStyle BackColor="White"></AlternatingRowStyle>

@@ -78,13 +78,22 @@ namespace POCKBIT_v2.Paginas
         protected global::System.Web.UI.WebControls.TextBox txtCantidadV;
 
         /// <summary>
-        /// txtDescuento control.
+        /// ddlCliente control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescuento;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCliente;
+
+        /// <summary>
+        /// SqlDataSourceClientes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceClientes;
 
         /// <summary>
         /// btnInsertar control.

@@ -352,6 +352,7 @@
     <Content Include="Paginas\medicamentos.aspx" />
     <Content Include="Paginas\prueba.aspx" />
     <Content Include="Paginas\Roles.aspx" />
+    <Content Include="Paginas\tickets.aspx" />
     <Content Include="Paginas\ventas.aspx" />
     <Content Include="README\ReadMe.txt" />
     <Content Include="README\sql.sql" />
@@ -629,6 +630,13 @@
     </Compile>
     <Compile Include="Paginas\Roles.aspx.designer.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Paginas\tickets.aspx.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Paginas\tickets.aspx.designer.cs">
+      <DependentUpon>tickets.aspx</DependentUpon>
     </Compile>
     <Compile Include="Paginas\ventas.aspx.cs">
       <DependentUpon>ventas.aspx</DependentUpon>

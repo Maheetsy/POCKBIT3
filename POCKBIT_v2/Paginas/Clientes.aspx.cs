@@ -67,6 +67,22 @@ namespace POCKBIT_v2.Paginas
             }
             return dt;
         }
+        protected void GVClientes_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            // Obtener la dirección de la ordenación (ascendente o descendente)
+            string sortDirection = "ASC";
+            if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
+            {
+                sortDirection = "DESC";
+            }
+
+            // Actualizar ViewState con la nueva dirección
+            ViewState["SortDirection"] = sortDirection;
+
+            // Actualizar el orden de la columna
+            SqlDataSourceClientes.SelectCommand = $"SELECT id_cliente, nombre, direccion, telefono, email, fecha_registro, activo FROM cliente ORDER BY {e.SortExpression} {sortDirection}";
+            GVClientes.DataBind(); // Refrescar el GridView
+        }
 
         public void BorrarCampos()
         {

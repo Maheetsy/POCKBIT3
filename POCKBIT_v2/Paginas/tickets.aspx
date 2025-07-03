@@ -29,26 +29,17 @@
     border-bottom: 2px solid #dee2e6;
 }
 
-.custom-table tbody + tbody {
-    border-top: 2px solid #dee2e6;
-}
-
-.custom-table .table {
-    background-color: #fff;
-}
-
-/* Estilo para el paginado */
-.custom-table > .pagination {
-    margin-top: 0.5rem;
-}
-
 /* Estilo para el botón de impresión */
 .btn-sm {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    line-height: 1.5;
-    border-radius: 0.2rem;
-}
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        background-color: #03c3ec; /* Color de fondo azul */
+        border-radius: 0.2rem;
+        color: white; /* Texto blanco */
+        border: none; /* Eliminar borde */
+    }
+
         .ticket {
             width: 80mm;
             font-family: 'Courier New', monospace;
@@ -109,58 +100,63 @@
     
     <h3>Tickets</h3>
 
-    <!-- Tabla de tickets -->
     <div id="divTablaTickets" runat="server" class="table-responsive rounded-3">
-    <asp:GridView ID="GVTickets" runat="server" CssClass="table custom-table" 
-        AutoGenerateColumns="False" DataKeyNames="id_venta" 
-        OnRowCommand="GVTickets_RowCommand" CellPadding="4" ForeColor="#333333" 
-        GridLines="None" AllowPaging="True" PageSize="10">
-        
-        <AlternatingRowStyle BackColor="White" />
-        <Columns>
-            <asp:BoundField DataField="id_venta" HeaderText="ID VENTA" SortExpression="id_venta">
-                <ItemStyle HorizontalAlign="Center" />
-            </asp:BoundField>
-            
-            <asp:BoundField DataField="fecha_de_salida" HeaderText="FECHA" SortExpression="fecha_de_salida" 
-                DataFormatString="{0:dd/MM/yyyy HH:mm}" HtmlEncode="false" />
-                
-            <asp:BoundField DataField="medicamento" HeaderText="MEDICAMENTO" SortExpression="medicamento" />
-            
-            <asp:BoundField DataField="cantidad" HeaderText="CANTIDAD" SortExpression="cantidad">
-                <ItemStyle HorizontalAlign="Center" />
-            </asp:BoundField>
-            
-            <asp:BoundField DataField="precio_venta_total" HeaderText="TOTAL" SortExpression="precio_venta_total" 
-                DataFormatString="${0:N2}" HtmlEncode="false">
-                <ItemStyle HorizontalAlign="Right" />
-            </asp:BoundField>
-            
-            <asp:TemplateField HeaderText="ACCIÓN" ItemStyle-HorizontalAlign="Center">
-                <ItemTemplate>
-                    <asp:Button ID="btnImprimir" runat="server" CommandName="ImprimirTicket" 
-                        CommandArgument='<%# Container.DataItemIndex %>' Text="🖨️ Imprimir"
-                        CssClass="btn btn-primary btn-sm" />
-                </ItemTemplate>
-            </asp:TemplateField>
-        </Columns>
-        
-        <EditRowStyle BackColor="#2461BF" />
-        <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-        <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White" />
-        <PagerStyle HorizontalAlign="Center" BackColor="#2461BF" ForeColor="White" />
-        <RowStyle BackColor="#EFF3FB" />
-        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-        <SortedAscendingCellStyle BackColor="#F5F7FB" />
-        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-        <SortedDescendingCellStyle BackColor="#E9EBEF" />
-        <SortedDescendingHeaderStyle BackColor="#4870BE" />
-    </asp:GridView>
+   <asp:GridView ID="GVTickets" runat="server" CssClass="table custom-table" 
+    AutoGenerateColumns="False" DataKeyNames="id_venta" 
+    OnRowCommand="GVTickets_RowCommand" AllowSorting="True" CellPadding="4" ForeColor="#333333" 
+    GridLines="None" AllowPaging="True" PageSize="10" 
+    SortExpression="id_venta" SortDirection="Descending" DataSourceID="SqlDataSourceTickets"> 
+    <AlternatingRowStyle BackColor="White" />
+    <Columns>
+        <asp:BoundField DataField="id_venta" HeaderText="ID VENTA" SortExpression="id_venta">
+            <ItemStyle HorizontalAlign="Center" />
+        </asp:BoundField>
+
+        <asp:BoundField DataField="fecha_de_salida" HeaderText="FECHA" SortExpression="fecha_de_salida" 
+            DataFormatString="{0:dd/MM/yyyy HH:mm}" HtmlEncode="false" />
+
+        <asp:BoundField DataField="medicamento" HeaderText="MEDICAMENTO" SortExpression="medicamento" />
+
+        <asp:BoundField DataField="cantidad" HeaderText="CANTIDAD" SortExpression="cantidad">
+            <ItemStyle HorizontalAlign="Center" />
+        </asp:BoundField>
+
+        <asp:BoundField DataField="total" HeaderText="TOTAL" SortExpression="total" 
+            DataFormatString="${0:N2}" HtmlEncode="false">
+            <ItemStyle HorizontalAlign="Right" />
+        </asp:BoundField>
+
+        <asp:TemplateField HeaderText="ACCIÓN" ItemStyle-HorizontalAlign="Center">
+            <ItemTemplate>
+                <asp:Button ID="btnImprimir" runat="server" CommandName="ImprimirTicket" 
+                    CommandArgument='<%# Container.DataItemIndex %>' Text="🖨️ Imprimir"
+                    CssClass="btn btn-sm" />
+            </ItemTemplate>
+        </asp:TemplateField>
+    </Columns>
+
+    <EditRowStyle BackColor="#2461BF" />
+    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+    <HeaderStyle BackColor="#03c3ec" Font-Bold="True" ForeColor="White" />
+    <PagerStyle HorizontalAlign="Center" BackColor="#2461BF" ForeColor="White" />
+    <RowStyle BackColor="#EFF3FB" />
+    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+    <SortedAscendingCellStyle BackColor="#F5F7FB" />
+    <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+    <SortedDescendingCellStyle BackColor="#E9EBEF" />
+    <SortedDescendingHeaderStyle BackColor="#4870BE" />
+</asp:GridView>
+
+<asp:SqlDataSource ID="SqlDataSourceTickets" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:DefaultConnection %>"
+    SelectCommand="SELECT id_venta, fecha_de_salida, total, cliente, medicamento, cantidad, realizado_por
+                   FROM ViewTicket
+                   ORDER BY id_venta DESC">
+</asp:SqlDataSource>
+
+
 </div>
-    <!-- Overlay para el fondo oscuro -->
     <div id="overlay" class="overlay"></div>
-    
-    <!-- Contenedor del ticket (oculto inicialmente) -->
     <div id="ticketContainer" class="ticket"></div>
 
     <script>

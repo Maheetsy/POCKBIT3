@@ -26,16 +26,17 @@ namespace POCKBIT_v2.Paginas
                 {
                     // CORRECCIÓN: Usar 'total' en lugar de 'precio_venta_total' como está en la vista
                     string query = @"SELECT id_venta, fecha_de_salida, total AS precio_venta_total, 
-                                   medicamento, cantidad, realizado_por
-                                   FROM ViewTicket
-                                   ORDER BY fecha_de_salida DESC";
+                               medicamento, cantidad, realizado_por
+                               FROM ViewTicket
+                               ORDER BY fecha_de_salida DESC";
 
                     new SqlDataAdapter(query, conexion).Fill(dt);
 
                     if (dt.Rows.Count > 0)
                     {
-                        GVTickets.DataSource = dt;
-                        GVTickets.DataBind();
+                        // Aquí ya no es necesario asignar el DataSource manualmente
+                        // GVTickets.DataSource = dt;  // ELIMINAR esta línea
+                        // GVTickets.DataBind();  // ELIMINAR esta línea
                     }
                     else
                     {
@@ -80,6 +81,25 @@ namespace POCKBIT_v2.Paginas
                     MostrarError($"Error inesperado: {ex.Message}");
                 }
             }
+        }
+        protected void GVTickets_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            string sortDirection = "ASC";
+
+            if (ViewState["SortDirection"] != null && ViewState["SortDirection"].ToString() == "ASC")
+            {
+                sortDirection = "DESC";
+            }
+
+            // Actualizar ViewState con la nueva dirección
+            ViewState["SortDirection"] = sortDirection;
+
+            // Actualizar el orden de la columna
+            SqlDataSourceTickets.SelectCommand = $"SELECT id_venta, fecha_de_salida, medicamento, cantidad, precio_venta_total, " +
+                                                 $"costo_venta, ganancia_total, fecha_de_salida, realizado_por, nombre_cliente " +
+                                                 $"FROM ViewTicket ORDER BY {e.SortExpression} {sortDirection}";
+
+            GVTickets.DataBind(); // Refrescar el GridView
         }
 
         private string GenerarHtmlTicket(int idVenta)

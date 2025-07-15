@@ -33,6 +33,15 @@ namespace POCKBIT_v2.Paginas
         protected global::System.Web.UI.WebControls.Label lblId;
 
         /// <summary>
+        /// txtCodigoB control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCodigoB;
+
+        /// <summary>
         /// txtNombreC control.
         /// </summary>
         /// <remarks>
@@ -94,15 +103,6 @@ namespace POCKBIT_v2.Paginas
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrecioV;
-
-        /// <summary>
-        /// txtCodigoB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCodigoB;
 
         /// <summary>
         /// ddlEstado control.

@@ -11,42 +11,67 @@
         <div class="card">
             <div class="card-body p-3">
                 <div class="row mb-3 row-center">
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">ID:</label>
-                        <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Código de Barras:</label>
-                        <asp:DropDownList ID="ddlCodigoB" runat="server" CssClass="form-select" AutoPostBack="True" DataSourceID="SqlDataSourceCodigosBarras" DataTextField="codigo_de_barras" DataValueField="id_medicamento"></asp:DropDownList>
-                        <asp:SqlDataSource runat="server" ID="SqlDataSourceCodigosBarras" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_medicamento, codigo_de_barras FROM medicamento WHERE (activo = 1)"></asp:SqlDataSource>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Número de Lote:</label>
-                        <asp:TextBox ID="txtNumeroLote" runat="server" Placeholder="Número de lote" CssClass="form-control"></asp:TextBox>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Fecha de caducidad:</label>
-                        <input type="date" id="txtFechaCaducidad" runat="server" class="form-control" />
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Estado:</label>
-                        <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
-                            <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
-                            <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
-                        </asp:DropDownList>
-                    </div>
+                    <div class="row mb-3">
+    <!-- ID -->
+    <div class="col-md-3 mb-3">
+        <label class="form-control-label">ID:</label>
+        <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
+    </div>
+
+    <!-- Código de Barras -->
+    <div class="col-md-3 mb-3">
+        <label class="form-control-label">Código de Barras:</label>
+        <asp:TextBox ID="txtCodigoB" runat="server" Placeholder="Código de Barras" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtCodigoB_TextChanged"></asp:TextBox>
+    </div>
+
+    <!-- Botón Escanear -->
+    <div class="col-md-2 d-flex align-items-end mb-3">
+        <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-100">
+            📷 Escanear
+        </button>
+    </div>
+
+    <!-- Número de Lote -->
+    <div class="col-md-4 mb-3">
+        <label class="form-control-label">Número de Lote:</label>
+        <asp:TextBox ID="txtNumeroLote" runat="server" Placeholder="Número de lote" CssClass="form-control"></asp:TextBox>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <!-- Fecha de Caducidad -->
+    <div class="col-md-3 mb-3">
+        <label class="form-control-label">Fecha de caducidad:</label>
+        <input type="date" id="txtFechaCaducidad" runat="server" class="form-control" />
+    </div>
+
+    <!-- Estado -->
+    <div class="col-md-3 mb-3">
+        <label class="form-control-label">Estado:</label>
+        <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
+            <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
+            <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
+        </asp:DropDownList>
+    </div>
+
+    <!-- Vista Escáner -->
+    <div class="col-md-6 mb-3">
+        <label>Vista Escáner:</label>
+        <div id="reader" style="width:100%; height:100%; min-height:250px; border:1px solid #ccc; border-radius:6px;"></div>
+    </div>
+</div>
                 </div>
-                <div class="row mb-2 btn-center">
-                    <div class="col-md-3 mb-2">
+                <div class="row mb-3 text-center">
+                    <div class="col-md-3">
                         <asp:Button ID="btnInsertar" runat="server" Text="Insertar" CssClass="btn btn-success w-100" OnClick="btnInsertar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-info w-100" OnClick="btnModificar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger w-100" OnClick="btnEliminar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnExportarExcel" runat="server" Text="Exportar a Excel" CssClass="btn btn-primary w-100" OnClick="btnExportarExcel_Click" />
                     </div>
                 </div>
@@ -84,4 +109,72 @@
         </asp:GridView>
     </div>
     <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT lote.id_lote, medicamento.codigo_de_barras, lote.numero_de_lote, medicamento.nombre, medicamento.descripcion, lote.cantidad, lote.fecha_caducidad, lote.activo, lote.realizado_por FROM laboratorio INNER JOIN medicamento ON laboratorio.id_laboratorio = medicamento.id_laboratorio INNER JOIN lote ON medicamento.id_medicamento = lote.id_medicamento WHERE (laboratorio.activo = 1) ORDER BY lote.id_lote DESC"></asp:SqlDataSource>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        function iniciarEscaneo() {
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrConfig = { fps: 10, qrbox: 250 };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                qrConfig,
+                (decodedText) => {
+                    // Establecer el valor decodificado en el campo de código de barras
+                    const input = document.getElementById('<%= txtCodigoB.ClientID %>');
+                    input.value = decodedText;
+
+                    html5QrCode.stop().then(() => {
+                        // Limpiar el área de escaneo
+                        document.getElementById("reader").innerHTML = "";
+                    });
+
+                    // Forzar blur y luego __doPostBack
+                    input.focus();
+                    setTimeout(() => {
+                        input.blur(); // Esto activa el evento TextChanged si es manual
+                        __doPostBack('<%= txtCodigoB.UniqueID %>', ''); // Forzar postback para manejar el evento
+                    }, 300);
+                },
+                (errorMessage) => {
+                    // Puedes mostrar un error si el escaneo no es exitoso
+                }
+            ).catch(err => {
+                console.error("Error al acceder a la cámara", err);
+            });
+        }
+    </script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        function iniciarEscaneo() {
+            const html5QrCode = new Html5Qrcode("reader");
+            const qrConfig = { fps: 10, qrbox: 250 };
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                qrConfig,
+                (decodedText) => {
+                    // Establecer el valor decodificado en el campo de código de barras
+                    const input = document.getElementById('<%= txtCodigoB.ClientID %>');
+                    input.value = decodedText;
+
+                    html5QrCode.stop().then(() => {
+                        // Limpiar el área de escaneo
+                        document.getElementById("reader").innerHTML = "";
+                    });
+
+                    // Forzar blur y luego __doPostBack
+                    input.focus();
+                    setTimeout(() => {
+                        input.blur(); // Esto activa el evento TextChanged si es manual
+                        __doPostBack('<%= txtCodigoB.UniqueID %>', ''); // Forzar postback para manejar el evento
+                    }, 300);
+                },
+                (errorMessage) => {
+                    // Puedes mostrar un error si el escaneo no es exitoso
+                }
+            ).catch(err => {
+                console.error("Error al acceder a la cámara", err);
+            });
+        }
+    </script>
 </asp:Content>

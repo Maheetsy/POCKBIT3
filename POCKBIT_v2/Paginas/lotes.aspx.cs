@@ -84,6 +84,7 @@ namespace POCKBIT_v2.Paginas
         public void BorrarTxt()
         {
             txtNumeroLote.Text = "";
+            txtCodigoB.Text = "";
             txtFechaCaducidad.Value = "";
             lblId.Text = "";
             ddlEstado.SelectedIndex = 1;
@@ -127,7 +128,24 @@ namespace POCKBIT_v2.Paginas
 
             ltlAlert.Text = alertHtml;
         }
+        protected void txtCodigoB_TextChanged(object sender, EventArgs e)
+        {
+            string codigo = txtCodigoB.Text.Trim();
 
+        }
+        private int? ObtenerIdMedicamentoDesdeCodigo(string codigoBarras, SqlConnection conexion)
+        {
+            using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo", conexion))
+            {
+                cmd.Parameters.AddWithValue("@codigo", codigoBarras);
+                object resultado = cmd.ExecuteScalar();
+                if (resultado != null && int.TryParse(resultado.ToString(), out int id))
+                {
+                    return id;
+                }
+                return null;
+            }
+        }
         protected void btnInsertar_Click(object sender, EventArgs e)
         {
             try
@@ -136,12 +154,20 @@ namespace POCKBIT_v2.Paginas
                 {
                     conexion.Open();
 
+                    // Obtener el ID del medicamento a partir del código de barras
+                    int? idMedicamento = ObtenerIdMedicamentoDesdeCodigo(txtCodigoB.Text.Trim(), conexion);
+                    if (idMedicamento == null)
+                    {
+                        MostrarMensaje("Error: Código de barras no encontrado en la base de datos.", "warning");
+                        return;
+                    }
+
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarLote", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@numero_de_lote", txtNumeroLote.Text);
                         cmd.Parameters.AddWithValue("@fecha_caducidad", txtFechaCaducidad.Value);
-                        cmd.Parameters.AddWithValue("@id_medicamento", int.Parse(ddlCodigoB.SelectedValue));
+                        cmd.Parameters.AddWithValue("@id_medicamento", idMedicamento.Value);
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
@@ -159,6 +185,7 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
+
                     BorrarTxt();
                     GVLotes.DataBind();
                 }
@@ -168,6 +195,7 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
+
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             try
@@ -176,13 +204,21 @@ namespace POCKBIT_v2.Paginas
                 {
                     conexion.Open();
 
+                    // Obtener el ID del medicamento a partir del código de barras
+                    int? idMedicamento = ObtenerIdMedicamentoDesdeCodigo(txtCodigoB.Text.Trim(), conexion);
+                    if (idMedicamento == null)
+                    {
+                        MostrarMensaje("Error: Código de barras no encontrado en la base de datos.", "warning");
+                        return;
+                    }
+
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarLote", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@id_lote", int.Parse(lblId.Text));
                         cmd.Parameters.AddWithValue("@numero_de_lote", txtNumeroLote.Text);
                         cmd.Parameters.AddWithValue("@fecha_caducidad", txtFechaCaducidad.Value);
-                        cmd.Parameters.AddWithValue("@id_medicamento", int.Parse(ddlCodigoB.SelectedValue));
+                        cmd.Parameters.AddWithValue("@id_medicamento", idMedicamento.Value);
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
 
@@ -200,6 +236,7 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
+
                     BorrarTxt();
                     GVLotes.DataBind();
                 }
@@ -251,6 +288,7 @@ namespace POCKBIT_v2.Paginas
             GridViewRow row = GVLotes.SelectedRow;
 
             lblId.Text = row.Cells[1].Text.Trim();
+            txtCodigoB.Text = row.Cells[2].Text.Trim();
             txtNumeroLote.Text = row.Cells[3].Text.Trim();
             txtFechaCaducidad.Value = row.Cells[7].Text.Trim();
 

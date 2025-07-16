@@ -85,4 +85,3 @@
     </div>
     <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT lote.id_lote, medicamento.codigo_de_barras, lote.numero_de_lote, medicamento.nombre, medicamento.descripcion, lote.cantidad, lote.fecha_caducidad, lote.activo, lote.realizado_por FROM laboratorio INNER JOIN medicamento ON laboratorio.id_laboratorio = medicamento.id_laboratorio INNER JOIN lote ON medicamento.id_medicamento = lote.id_medicamento WHERE (laboratorio.activo = 1) ORDER BY lote.id_lote DESC"></asp:SqlDataSource>
 </asp:Content>
-

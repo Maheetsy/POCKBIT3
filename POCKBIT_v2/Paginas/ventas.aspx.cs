@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using POCKBIT_v2.Helpers;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -6,7 +8,6 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
 
 namespace POCKBIT_v2.Paginas
 {
@@ -30,29 +31,7 @@ namespace POCKBIT_v2.Paginas
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {
-            DataTable dt = GetAllVentas();
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                var ws = wb.Worksheets.Add(dt, "Ventas");
-
-                var headerRow = ws.Row(1);
-                headerRow.Style.Font.Bold = true;
-                headerRow.Style.Fill.BackgroundColor = XLColor.AirForceBlue;
-                headerRow.Style.Font.FontColor = XLColor.White;
-
-                Response.Clear();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=Ventas.xlsx");
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(memoryStream);
-                    memoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
-            }
+            ExcelHelper.ExportarDataTable(Response, GetAllVentas(), "Ventas.xlsx");
         }
         private DataTable GetAllVentas()
         {

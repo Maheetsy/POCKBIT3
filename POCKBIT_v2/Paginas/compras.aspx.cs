@@ -7,11 +7,16 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ClosedXML.Excel;
+using POCKBIT_v2.Helpers;
 
 namespace POCKBIT_v2.Paginas
 {
     public partial class compras : System.Web.UI.Page
     {
+        protected void btnExportarExcel_Click(object sender, EventArgs e)
+        {
+            ExcelHelper.ExportarDataTable(Response, GetAllCompras(), "Compras.xlsx");
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -55,33 +60,6 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
-
-        protected void btnExportarExcel_Click(object sender, EventArgs e)
-        {
-            DataTable dt = GetAllCompras();
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                var ws = wb.Worksheets.Add(dt, "Compras");
-                var headerRow = ws.Row(1);
-                headerRow.Style.Font.Bold = true;
-                headerRow.Style.Fill.BackgroundColor = XLColor.AirForceBlue;
-                headerRow.Style.Font.FontColor = XLColor.White;
-
-                Response.Clear();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=Compras.xlsx");
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(memoryStream);
-                    memoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
-            }
-        }
-
         private DataTable GetAllCompras()
         {
             DataTable dt = new DataTable();
@@ -98,7 +76,6 @@ namespace POCKBIT_v2.Paginas
             }
             return dt;
         }
-
         public void BorrarTxt()
         {
             txtCantidadC.Text = ""; 
@@ -106,7 +83,6 @@ namespace POCKBIT_v2.Paginas
             ddlLote.SelectedIndex = -1;
             lblId.Text = "";
         }
-
         private void MostrarMensaje(string mensaje, string tipo)
         {
             string alertType;
@@ -128,7 +104,6 @@ namespace POCKBIT_v2.Paginas
                 </div>";
             ltlAlert.Text = alertHtml;
         }
-
         protected void LlenarDropDownLists()
         {
             //ddlLote.DataBind();
@@ -218,7 +193,6 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("❌ Error al modificar: " + ex.Message, "danger");
             }
         }
-
         protected void GVCompras_SelectedIndexChanged(object sender, EventArgs e)
         {
             GridViewRow row = GVCompras.SelectedRow;
@@ -269,7 +243,6 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
-
         protected void GVCompras_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)

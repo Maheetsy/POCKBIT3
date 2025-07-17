@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using POCKBIT_v2.Helpers;
 using System;
 using System.Configuration;
 using System.Data;
@@ -103,27 +104,8 @@ namespace POCKBIT_v2.Paginas
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {
-            DataTable dt = GetAllLaboratorios();
-            using (XLWorkbook wb = new XLWorkbook())
-            {
-                var ws = wb.Worksheets.Add(dt, "Laboratorios");
-                var headerRow = ws.Row(1);
-                headerRow.Style.Font.Bold = true;
-                headerRow.Style.Fill.BackgroundColor = XLColor.AirForceBlue;
-                headerRow.Style.Font.FontColor = XLColor.White;
+            ExcelHelper.ExportarDataTable(Response, GetAllLaboratorios(), "Laboratorios.xlsx");
 
-                Response.Clear();
-                Response.Buffer = true;
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.AddHeader("content-disposition", "attachment;filename=Laboratorios.xlsx");
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(memoryStream);
-                    memoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
-            }
         }
 
         private DataTable GetAllLaboratorios()

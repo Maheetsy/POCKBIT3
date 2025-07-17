@@ -14,6 +14,7 @@ namespace POCKBIT_v2.Paginas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            SeguridadHelper.VerificarAutenticacion2FA(this);
             if (!IsPostBack)
             {
                 LlenarDropDownLists();

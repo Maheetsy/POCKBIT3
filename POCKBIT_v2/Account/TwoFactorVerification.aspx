@@ -59,9 +59,9 @@
                 </div>
                 <div class="btn-center">
                     <asp:Button ID="btnVerify" runat="server" Text="Verificar" CssClass="btn btn-info" OnClick="btnVerify_Click" />
-                </div>
-                <div class="row row-center mt-3">
-                    <div class="col-md-6 text-center">
+                </div><br />
+                <div class="row row-center">
+                    <div class="col-mb-4 text-center">
                         <span>¿Olvidaste tu código QR o cambiaste de dispositivo?</span><br />
                         <a href="/2Factores/TwoFactorSetup.aspx" class="btn btn-outline-primary mt-2">
                             🔄 Generar nuevo código QR de autenticación

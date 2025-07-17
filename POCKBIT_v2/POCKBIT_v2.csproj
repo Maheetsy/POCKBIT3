@@ -350,7 +350,6 @@
     <Content Include="Paginas\laboratorios.aspx" />
     <Content Include="Paginas\lotes.aspx" />
     <Content Include="Paginas\medicamentos.aspx" />
-    <Content Include="Paginas\prueba.aspx" />
     <Content Include="Admin\Roles.aspx" />
     <Content Include="Paginas\tickets.aspx" />
     <Content Include="Paginas\ventas.aspx" />
@@ -618,13 +617,6 @@
     <Compile Include="Paginas\medicamentos.aspx.designer.cs">
       <DependentUpon>medicamentos.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Paginas\prueba.aspx.cs">
-      <DependentUpon>prueba.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Paginas\prueba.aspx.designer.cs">
-      <DependentUpon>prueba.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Admin\Roles.aspx.cs">
       <DependentUpon>Roles.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -647,6 +639,7 @@
       <DependentUpon>ventas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeguridadHelper.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

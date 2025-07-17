@@ -16,10 +16,7 @@ namespace POCKBIT_v2.Paginas
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            //{
-            //    Response.Redirect("~/Account/Login");
-            //}
+            SeguridadHelper.VerificarAutenticacion2FA(this);
         }
 
         protected void btnInsertar_Click(object sender, EventArgs e)

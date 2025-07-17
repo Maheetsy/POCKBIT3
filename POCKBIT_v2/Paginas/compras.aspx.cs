@@ -18,11 +18,7 @@ namespace POCKBIT_v2.Paginas
             {
                 LlenarDropDownLists();
             }
-
-            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            //{
-            //    Response.Redirect("~/Account/Login");
-            //}
+            SeguridadHelper.VerificarAutenticacion2FA(this);
         }
         protected void txtCodigoBarras_TextChanged(object sender, EventArgs e)
         {

@@ -13,10 +13,7 @@ namespace POCKBIT_v2.Paginas
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            //{
-            //    Response.Redirect("~/Account/Login");
-            //}
+            SeguridadHelper.VerificarAutenticacion2FA(this); //Comentar esta linea para quitar la autentificacion de 2FA
             if (!IsPostBack)
             {
                 lblYear.Text = DateTime.Now.Year.ToString();

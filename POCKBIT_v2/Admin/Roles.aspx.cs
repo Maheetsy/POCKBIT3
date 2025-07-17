@@ -23,6 +23,8 @@ namespace POCKBIT_v2.Paginas
             {
                 CargarDatosIniciales();
             }
+            SeguridadHelper.VerificarAutenticacion2FA(this);
+
         }
 
         private void CargarDatosIniciales()

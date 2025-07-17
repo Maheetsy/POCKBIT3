@@ -18,11 +18,7 @@ namespace POCKBIT_v2.Paginas
             {
                 GVClientes.DataBind();
             }
-
-            //if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
-            //{
-            //    Response.Redirect("~/Account/Login");
-            //}
+            SeguridadHelper.VerificarAutenticacion2FA(this);
         }
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)

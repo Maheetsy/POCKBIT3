@@ -10,57 +10,53 @@
     <div class="card-row">
         <div class="card">
             <div class="card-body p-3">
-                <div class="row mb-3 row-center">
-                    <div class="row mb-3">
-    <!-- ID -->
-    <div class="col-md-3 mb-3">
-        <label class="form-control-label">ID:</label>
-        <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
-    </div>
-
-    <!-- Código de Barras -->
-    <div class="col-md-3 mb-3">
-        <label class="form-control-label">Código de Barras:</label>
-        <asp:TextBox ID="txtCodigoB" runat="server" Placeholder="Código de Barras" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtCodigoB_TextChanged"></asp:TextBox>
-    </div>
-
-    <!-- Botón Escanear -->
-    <div class="col-md-2 d-flex align-items-end mb-3">
-        <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-100">
-            📷 Escanear
-        </button>
-    </div>
-
-    <!-- Número de Lote -->
-    <div class="col-md-4 mb-3">
-        <label class="form-control-label">Número de Lote:</label>
-        <asp:TextBox ID="txtNumeroLote" runat="server" Placeholder="Número de lote" CssClass="form-control"></asp:TextBox>
-    </div>
-</div>
-
-<div class="row mb-3">
-    <!-- Fecha de Caducidad -->
-    <div class="col-md-3 mb-3">
-        <label class="form-control-label">Fecha de caducidad:</label>
-        <input type="date" id="txtFechaCaducidad" runat="server" class="form-control" />
-    </div>
-
-    <!-- Estado -->
-    <div class="col-md-3 mb-3">
-        <label class="form-control-label">Estado:</label>
-        <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
-            <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
-            <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
-        </asp:DropDownList>
-    </div>
-
-    <!-- Vista Escáner -->
-    <div class="col-md-6 mb-3">
-        <label>Vista Escáner:</label>
-        <div id="reader" style="width:100%; height:100%; min-height:250px; border:1px solid #ccc; border-radius:6px;"></div>
-    </div>
-</div>
+                <div class="row mb-4">
+                    <!-- COL 9: FORMULARIO -->
+                    <div class="col-md-9">
+                        <div class="row mb-3">
+                            <!-- ID -->
+                            <div class="col-md-4">
+                                <label class="form-control-label">ID:</label>
+                                <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
+                            </div>
+                            <!-- Código de Barras -->
+                            <div class="col-md-4">
+                                <label class="form-control-label">Código de Barras:</label>
+                                <asp:TextBox ID="txtCodigoB" runat="server" Placeholder="Código de Barras" CssClass="form-control" AutoPostBack="true" OnTextChanged="txtCodigoB_TextChanged"></asp:TextBox>
+                            </div>
+                            <!-- Botón Escanear -->
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-100">
+                                    📷 Escanear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <!-- Número de Lote -->
+                            <div class="col-md-4">
+                                <label class="form-control-label">Número de Lote:</label>
+                                <asp:TextBox ID="txtNumeroLote" runat="server" Placeholder="Número de lote" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="col md-4">
+                                <label class="form-control-label">Fecha de caducidad:</label>
+                                <input type="date" id="txtFechaCaducidad" runat="server" class="form-control" />
+                            </div>
+                            <!-- Estado -->
+                            <div class="col-md-4">
+                                <label class="form-control-label">Estado:</label>
+                                <asp:DropDownList ID="ddlEstado" runat="server" CssClass="form-select">
+                                    <asp:ListItem Text="Activo" Value="1"></asp:ListItem>
+                                    <asp:ListItem Text="Inactivo" Value="0"></asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-between">
+                        <label>Vista Escáner:</label>
+                        <div id="reader" style="width: 100%; height: 100%; min-height: 250px; border: 1px solid #ccc; border-radius: 6px;"></div>
+                    </div>
                 </div>
+                <!-- FILA DE BOTONES -->
                 <div class="row mb-3 text-center">
                     <div class="col-md-3">
                         <asp:Button ID="btnInsertar" runat="server" Text="Insertar" CssClass="btn btn-success w-100" OnClick="btnInsertar_Click" />
@@ -94,7 +90,7 @@
                 </asp:BoundField>
                 <asp:BoundField DataField="fecha_caducidad" HeaderText="Fecha De Caducidad" SortExpression="fecha_caducidad" DataFormatString="{0:yyyy-MM-dd}"></asp:BoundField>
                 <asp:CheckBoxField DataField="activo" HeaderText="Activo" SortExpression="activo"></asp:CheckBoxField>
-                 <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
+                <asp:BoundField DataField="realizado_por" HeaderText="Realizado Por" SortExpression="realizado_por"></asp:BoundField>
             </Columns>
             <EditRowStyle BackColor="#2461BF"></EditRowStyle>
             <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"></FooterStyle>

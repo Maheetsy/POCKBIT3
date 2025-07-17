@@ -674,6 +674,7 @@
     <Folder Include="assets\img\avatars\" />
     <Folder Include="assets\img\elements\" />
     <Folder Include="assets\img\layouts\" />
+    <Folder Include="Paginas\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

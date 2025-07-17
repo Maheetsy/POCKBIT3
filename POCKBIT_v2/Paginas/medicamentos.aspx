@@ -6,7 +6,7 @@
     </div>
 
     <asp:Literal ID="ltlAlert" runat="server"></asp:Literal>
-    
+
     <div class="card-row">
         <div class="card">
             <div class="card-body p-3">
@@ -32,7 +32,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-3 mb-3">
                                 <label class="form-control-label">Descripción:</label>
@@ -60,7 +60,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-3 mb-3">
                                 <label class="form-control-label">Precio de venta:</label>
@@ -84,7 +84,7 @@
                     <!-- COL 3: ESCÁNER (Misma posición que en ventas) -->
                     <div class="col-md-3 d-flex flex-column justify-content-between">
                         <label>Vista Escáner:</label>
-                        <div id="reader" style="width:100%; height:100%; min-height:250px; border:1px solid #ccc; border-radius:6px;"></div>
+                        <div id="reader" style="width: 100%; height: 100%; min-height: 250px; border: 1px solid #ccc; border-radius: 6px;"></div>
                     </div>
                 </div>
 

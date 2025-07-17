@@ -13,12 +13,10 @@ namespace POCKBIT_v2.Paginas
     public partial class laboratorios : System.Web.UI.Page
     {
         private string ConnectionString => ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             SeguridadHelper.VerificarAutenticacion2FA(this);
         }
-
         protected void btnInsertar_Click(object sender, EventArgs e)
         {
             try

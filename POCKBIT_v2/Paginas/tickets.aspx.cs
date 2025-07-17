@@ -23,7 +23,7 @@ namespace POCKBIT_v2.Paginas
             try
             {
                 DataTable dt = new DataTable();
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     // CORRECCIÓN: Usar 'total' en lugar de 'precio_venta_total' como está en la vista
                     string query = @"SELECT id_venta, fecha_de_salida, total AS precio_venta_total, 
@@ -109,7 +109,7 @@ namespace POCKBIT_v2.Paginas
 
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
 
@@ -174,24 +174,6 @@ namespace POCKBIT_v2.Paginas
             }
 
             return sb.ToString();
-        }
-
-        private string Get_ConnectionString()
-        {
-            try
-            {
-                var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"];
-                if (connectionString == null)
-                {
-                    throw new Exception("Cadena de conexión no configurada");
-                }
-                return connectionString.ConnectionString;
-            }
-            catch (Exception ex)
-            {
-                LogError($"Error obteniendo conexión: {ex.Message}");
-                throw;
-            }
         }
 
         private void MostrarError(string mensaje)

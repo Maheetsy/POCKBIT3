@@ -54,11 +54,10 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
-
         private DataTable GetAllVentas()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 string query = @"SELECT v.id_venta, m.codigo_de_barras, l.numero_de_lote, m.nombre, 
                        v.cantidad, v.precio_venta_total, v.costo_venta, v.ganancia_total, 
@@ -87,12 +86,6 @@ namespace POCKBIT_v2.Paginas
             ddlCliente.SelectedIndex = 0; // Seleccionar "Público en general"
             lblId.Text = "";
         }
-
-        public string Get_ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        }
-
         private void MostrarMensaje(string mensaje, string tipo)
         {
             string alertType;
@@ -125,7 +118,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarVenta", conexion))
@@ -171,7 +164,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarVenta", conexion))
@@ -218,7 +211,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_EliminarVenta", conexion))
@@ -259,7 +252,7 @@ namespace POCKBIT_v2.Paginas
             txtCantidadV.Text = GVVentas.SelectedRow.Cells[5].Text.Trim();
 
             // Obtener id_medicamento por el código de barras
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 conexion.Open();
                 using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
@@ -338,7 +331,7 @@ namespace POCKBIT_v2.Paginas
 
             if (!string.IsNullOrEmpty(codigo))
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))

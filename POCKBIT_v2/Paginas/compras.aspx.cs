@@ -26,7 +26,7 @@ namespace POCKBIT_v2.Paginas
 
             if (!string.IsNullOrEmpty(codigo))
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
@@ -85,7 +85,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable GetAllCompras()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 string query = "SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por FROM ViewCompra ORDER BY id_compra DESC";
                 using (SqlCommand cmd = new SqlCommand(query, conexion))
@@ -105,11 +105,6 @@ namespace POCKBIT_v2.Paginas
             txtCodigoBarras.Text = "";
             ddlLote.SelectedIndex = -1;
             lblId.Text = "";
-        }
-
-        public string Get_ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         private void MostrarMensaje(string mensaje, string tipo)
@@ -143,7 +138,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarCompra", conexion))
@@ -190,7 +185,7 @@ namespace POCKBIT_v2.Paginas
                     return;
                 }
 
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarCompra", conexion))
@@ -236,7 +231,7 @@ namespace POCKBIT_v2.Paginas
             txtCodigoBarras.Text = codigoBarras;
 
             // Simular el comportamiento de TextChanged (obtener id_medicamento y llenar ddlLote)
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 conexion.Open();
                 using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
@@ -290,7 +285,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_EliminarCompra", conexion))

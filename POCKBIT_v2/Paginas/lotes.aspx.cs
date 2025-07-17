@@ -87,11 +87,6 @@ namespace POCKBIT_v2.Paginas
             ddlEstado.SelectedIndex = 1;
         }
 
-        public string Get_ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        }
-
         private void MostrarMensaje(string mensaje, string tipo)
         {
             string alertType;
@@ -147,7 +142,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
 
@@ -197,7 +192,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
 
@@ -248,7 +243,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_EliminarLote", conexion))

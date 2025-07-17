@@ -50,7 +50,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable GetAllClientes()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 string query = "SELECT id_cliente, nombre, direccion, telefono, email, fecha_registro, activo FROM ViewCliente ORDER BY id_cliente DESC";
                 using (SqlCommand cmd = new SqlCommand(query, conexion))
@@ -89,12 +89,6 @@ namespace POCKBIT_v2.Paginas
             txtEmail.Text = "";
             ddlEstado.SelectedIndex = 0;
         }
-
-        public string Get_ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        }
-
         private void MostrarMensaje(string mensaje, string tipo)
         {
             string alertType;
@@ -121,7 +115,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarCliente", conexion))
@@ -161,7 +155,7 @@ namespace POCKBIT_v2.Paginas
                     return;
                 }
 
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarCliente", conexion))
@@ -203,7 +197,7 @@ namespace POCKBIT_v2.Paginas
                     return;
                 }
 
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_EliminarCliente", conexion))

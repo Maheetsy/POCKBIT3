@@ -129,9 +129,6 @@ namespace POCKBIT_v2.Paginas
        
             label.Text += $" <small class='{claseColor} fw-semibold'><i class='bx {icono}'></i>{Math.Abs(porcentajeCambio):N2}%</small>";
         }
-
-
-
         private void LogError(Exception ex)
         {
             string logFilePath = Server.MapPath("~/App_Data/ErrorLog.txt");
@@ -234,11 +231,6 @@ namespace POCKBIT_v2.Paginas
         }
 
         // Métodos comunes para descargar reportes
-        private string GetConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        }
-
         private void DescargarReporteVentas(string periodo)
         {
             DataTable dt = ObtenerDatosVentas(periodo);
@@ -299,7 +291,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosVentas(string periodo)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = GenerarConsulta("ViewVentaReporte", "fecha_de_salida", periodo);
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -320,7 +312,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosCompras(string periodo)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = GenerarConsulta("ViewCompraReporte", "fecha_de_entrada", periodo);
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -341,7 +333,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosVentasMedicamento(int id_medicamento, DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_venta, codigo_de_barras, numero_de_lote, nombre, cantidad, precio_venta_total, costo_venta, ganancia_total, fecha_de_salida, realizado_por
                               FROM ViewVentaReporte 
                               WHERE id_medicamento = @IdMedicamento 
@@ -370,7 +362,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosVentasLaboratorio(int id_laboratorio, DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_venta, codigo_de_barras, numero_de_lote, nombre, cantidad, precio_venta_total, costo_venta, ganancia_total, fecha_de_salida, realizado_por
                               FROM ViewVentaReporte 
                               WHERE id_laboratorio = @IdLaboratorio 
@@ -399,7 +391,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosVentasFechas(DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_venta, codigo_de_barras, numero_de_lote, nombre, cantidad, precio_venta_total, costo_venta, ganancia_total, fecha_de_salida, realizado_por
                               FROM ViewVentaReporte 
                               WHERE fecha_de_salida BETWEEN @FechaInicio AND @FechaFin 
@@ -426,7 +418,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosComprasMedicamento(int id_medicamento, DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por
                               FROM ViewCompraReporte 
                               WHERE id_medicamento = @IdMedicamento 
@@ -455,7 +447,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosComprasLaboratorio(int id_laboratorio, DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por
                               FROM ViewCompraReporte 
                               WHERE id_laboratorio = @IdLaboratorio 
@@ -484,7 +476,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable ObtenerDatosComprasFechas(DateTime fechaInicio, DateTime fechaFin)
         {
             DataTable dt = new DataTable();
-            string connectionString = GetConnectionString();
+            string connectionString = DBHelper.GetConnectionString();
             string query = $@"SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por
                               FROM ViewCompraReporte 
                               WHERE fecha_de_entrada BETWEEN @FechaInicio AND @FechaFin 

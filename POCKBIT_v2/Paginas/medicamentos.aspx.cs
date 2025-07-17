@@ -45,7 +45,7 @@ namespace POCKBIT_v2.Paginas
         private DataTable GetAllMedicamentos()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
             {
                 using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento, codigo_de_barras, nombre, descripcion, nombre_laboratorio, costo, precio_venta, precio_maximo_publico, cantidad_total, fecha_de_registro, activo,realizado_por FROM ViewMedicamento ORDER BY id_medicamento DESC", conexion))
                 {
@@ -68,11 +68,6 @@ namespace POCKBIT_v2.Paginas
             txtCodigoB.Text = "";
             lblId.Text = "";
             ddlEstado.SelectedIndex = 1;
-        }
-
-        public string Get_ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         }
 
         private void MostrarMensaje(string mensaje, string tipo)
@@ -147,7 +142,7 @@ namespace POCKBIT_v2.Paginas
                     return;
                 }
 
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_InsertarMedicamento", conexion))
@@ -239,7 +234,7 @@ namespace POCKBIT_v2.Paginas
                     return;
                 }
 
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarMedicamento", conexion))
@@ -297,7 +292,7 @@ namespace POCKBIT_v2.Paginas
         {
             try
             {
-                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                using (SqlConnection conexion = new SqlConnection(DBHelper.GetConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_EliminarMedicamento", conexion))

@@ -42,6 +42,7 @@
     </style>
     <div class="text-center mb-4">
         <h2>Configurar Autentificador de Google</h2>
+         <p>Abre tu aplicación de autenticación (Google Authenticator) y escanea este codigo.</p>
     </div>
 
     <div class="row row-center mb-4">
@@ -67,4 +68,5 @@
             <asp:Button ID="btnVerify" runat="server" Text="Verificar" CssClass="btn btn-info w-100" OnClick="btnVerify_Click" />
         </div>
     </div>
+    
 </asp:Content>

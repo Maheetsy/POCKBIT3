@@ -15,6 +15,13 @@
 
         <asp:Button ID="btnAsignarRol" runat="server" Text="Asignar Rol" CssClass="btn btn-primary mt-2" OnClick="btnAsignarRol_Click" />
     </asp:Panel>
+    <div class="row row-center mt-3">
+        <div class="col-md-6 text-center">
+            <a href="/Account/Register.aspx" class="btn btn-outline-primary mt-2">
+                 Crear Nuevo usuario 🧑‍🦱
+            </a>
+        </div>
+    </div>
 
     <!-- Crear Nuevo Rol -->
     <asp:Panel runat="server" CssClass="form-group mt-4">

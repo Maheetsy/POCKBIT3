@@ -17,39 +17,22 @@ namespace POCKBIT_v2._2Factores
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                // ... código de generación del QR ...
-
-                if (qrCodeImageControl.ImageUrl != null)
-                {
-                    Response.Write("<script>console.log('QR generado exitosamente.');</script>");
-                }
-                else
-                {
-                    Response.Write("<script>alert('No se generó el código QR.');</script>");
-                }
-            }
-            else if (ViewState["QrImage"] != null)
-            {
-                qrCodeImageControl.ImageUrl = "data:image/png;base64," + ViewState["QrImage"].ToString();
-            }
-
-
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            // ✅ Solo permitir acceso si el usuario está autenticado
+            if (!User.Identity.IsAuthenticated)
             {
                 Response.Redirect("~/Account/Login");
+                return;
             }
+
             if (!IsPostBack)
             {
-                var user = User.Identity.Name; // Asumiendo que el nombre de usuario es el nombre del usuario logueado
+                var user = User.Identity.Name;
+
+                // ✅ Generar clave y código QR para el usuario
                 var key = KeyGeneration.GenerateRandomKey(20);
                 var secret = Base32Encoder.Encode(key);
-                Response.Write("<script>console.log('Secreto generado: " + secret + "');</script>");
-
                 ViewState["Secret"] = secret;
 
-                // Generar la URL para el código QR usando el formato de Google Authenticator
                 var barcodeUrl = $"otpauth://totp/{user}?secret={secret}&issuer=PockbitPharma";
 
                 using (var qrGenerator = new QRCodeGenerator())
@@ -67,26 +50,31 @@ namespace POCKBIT_v2._2Factores
                     }
                 }
             }
+            else if (ViewState["Secret"] != null)
+            {
+                qrCodeImageControl.ImageUrl = "data:image/png;base64," + ViewState["Secret"].ToString();
+            }
         }
 
         protected void btnVerify_Click(object sender, EventArgs e)
         {
             var secret = ViewState["Secret"].ToString();
             var totp = new Totp(Base32Encoder.Decode(secret));
-            var result = totp.VerifyTotp(txtCode.Text.Trim(), out long timeStepMatched, new VerificationWindow(2, 2));
+            var result = totp.VerifyTotp(txtCode.Text.Trim(), out long _, new VerificationWindow(2, 2));
 
             if (result)
             {
                 var user = User.Identity.Name;
                 SaveSecretToDatabase(user, secret);
-                Response.Redirect("~/Paginas/dashboard"); // Redirige a la página principal después de la verificación
+                Session["TwoFactorVerified"] = true; // ✅ Marcar como verificado
+                Response.Redirect("~/Paginas/dashboard");
             }
             else
             {
-                // Mostrar un mensaje de error
                 Response.Write("<script>alert('Código incorrecto');</script>");
             }
         }
+
         private void SaveSecretToDatabase(string userName, string secret)
         {
             var connectionString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;

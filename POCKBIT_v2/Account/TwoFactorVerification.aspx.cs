@@ -15,7 +15,10 @@ namespace POCKBIT_v2.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("~/Account/Login");
+            }
         }
 
         protected void btnVerify_Click(object sender, EventArgs e)

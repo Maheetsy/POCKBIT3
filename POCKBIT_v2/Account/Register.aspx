@@ -10,6 +10,9 @@
         <hr />
         <asp:ValidationSummary runat="server" CssClass="text-danger" />
         <div class="row">
+        <asp:Label ID="SuccessMessage" runat="server" CssClass="alert alert-success" Visible="false"></asp:Label>
+            </div>
+        <div class="row">
             <asp:Label runat="server" AssociatedControlID="Email" CssClass="col-md-2 col-form-label">Correo electrónico</asp:Label>
             <div class="col-md-10">
                 <asp:TextBox runat="server" ID="Email" CssClass="form-control" TextMode="Email" />

@@ -92,6 +92,9 @@
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/lotes">Lotes</a></li>
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/compras">Compras</a></li>
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/ventas">Ventas</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/Clientes">Clientes</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/tickets">Tickets</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Admin/roles">Roles</a></li>
                             </ul>
                             <ul class="navbar-nav navbar-right">
                                 <li><a runat="server" class="nav-link" href="~/Account/Manage" title="Manage your account">Hola, <%: Context.User.Identity.GetUserName() %> !</a></li>

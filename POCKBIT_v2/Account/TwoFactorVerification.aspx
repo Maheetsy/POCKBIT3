@@ -48,6 +48,7 @@
 
     <div class="text-center mb-4">
         <h2>Verificación de Dos Factores</h2>
+         <p>Abre tu aplicación de autenticación (Google Authenticator, Microsoft Authenticator, etc.) y escribe el código de 6 dígitos.</p>
     </div>
     <div class="card-row">
         <div class="card">
@@ -58,6 +59,14 @@
                 </div>
                 <div class="btn-center">
                     <asp:Button ID="btnVerify" runat="server" Text="Verificar" CssClass="btn btn-info" OnClick="btnVerify_Click" />
+                </div>
+                <div class="row row-center mt-3">
+                    <div class="col-md-6 text-center">
+                        <span>¿Olvidaste tu código QR o cambiaste de dispositivo?</span><br />
+                        <a href="/2Factores/TwoFactorSetup.aspx" class="btn btn-outline-primary mt-2">
+                            🔄 Generar nuevo código QR de autenticación
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

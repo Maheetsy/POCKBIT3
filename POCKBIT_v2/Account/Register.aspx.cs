@@ -13,11 +13,16 @@ namespace POCKBIT_v2.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["TwoFactorVerified"] == null || !(bool)Session["TwoFactorVerified"])
+            if (!IsPostBack)
             {
-                Response.Redirect("~/Account/Login");
+                if (Request.QueryString["registro"] == "ok")
+                {
+                    SuccessMessage.Text = "✅ Registro exitoso. Ahora puedes iniciar sesión.";
+                    SuccessMessage.Visible = true;
+                }
             }
         }
+
         protected void CreateUser_Click(object sender, EventArgs e)
         {
             var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
@@ -27,10 +32,10 @@ namespace POCKBIT_v2.Account
             if (result.Succeeded)
             {
                 // Inicia sesión automáticamente al usuario
-                signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                //signInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
 
                 // Redirigir a la página de configuración de verificación de dos factores
-                Response.Redirect("~/Account/TwoFactorSetup.aspx");
+                Response.Redirect("~/Account/Register.aspx?registro=ok");
             }
             else
             {

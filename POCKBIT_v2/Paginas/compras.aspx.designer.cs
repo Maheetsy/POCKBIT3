@@ -33,22 +33,22 @@ namespace POCKBIT_v2.Paginas
         protected global::System.Web.UI.WebControls.Label lblId;
 
         /// <summary>
-        /// ddlCodigoB control.
+        /// txtCodigoBarras control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCodigoB;
+        protected global::System.Web.UI.WebControls.TextBox txtCodigoBarras;
 
         /// <summary>
-        /// SqlDataSourceCodigosBarras control.
+        /// hiddenIdMedicamento control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceCodigosBarras;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenIdMedicamento;
 
         /// <summary>
         /// ddlLote control.

@@ -7,46 +7,85 @@
     <asp:Literal ID="ltlAlert" runat="server"></asp:Literal>
     <div class="card-row">
         <div class="card">
-            <div class="card-body p-3">
-                <div class="row mb-3">
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">ID:</label>
-                        <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Código de Barras:</label>
-                        <asp:DropDownList ID="ddlCodigoB" runat="server" CssClass="form-select" AutoPostBack="True" DataSourceID="SqlDataSourceCodigosBarras" DataTextField="codigo_de_barras" DataValueField="id_medicamento"></asp:DropDownList>
-                        <asp:SqlDataSource runat="server" ID="SqlDataSourceCodigosBarras" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_medicamento, codigo_de_barras FROM medicamento WHERE (activo = 1)"></asp:SqlDataSource>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Seleccionar Lote:</label>
-                        <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select" DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote" ></asp:DropDownList>
-                        <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_lote, numero_de_lote FROM lote WHERE (id_medicamento = @id_medicamento) AND (activo = 1) ORDER BY id_lote DESC">
-                            <SelectParameters>
-                                <asp:ControlParameter ControlID="ddlCodigoB" PropertyName="SelectedValue" Name="id_medicamento"></asp:ControlParameter>
-                            </SelectParameters>
-                        </asp:SqlDataSource>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Cantidad comprada:</label>
-                        <asp:TextBox ID="txtCantidadC" runat="server" Placeholder="Numeros enteros" CssClass="form-control"></asp:TextBox>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-control-label">Descuento:</label>
-                        <asp:TextBox ID="txtDescuento" runat="server" Placeholder="Funcion inactiva" CssClass="form-control"></asp:TextBox>
-                    </div>
-                </div>
-                <div class="row mb-2 btn-center">
-                    <div class="col-md-3 mb-2">
+        <div class="card-body p-3">
+    <!-- Fila principal: Inputs alineados + vista escáner -->
+    <div class="row mb-4">
+    <div class="col-md-9">
+        <!-- ID -->
+        <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-control-label">ID:</label>
+            <asp:Label ID="lblId" runat="server" CssClass="form-control"></asp:Label>
+        </div>
+
+        <!-- Código de Barras -->
+        <div class="col-md-4">
+            <label class="form-control-label">Código de Barras:</label>
+            <asp:TextBox ID="txtCodigoBarras" runat="server" CssClass="form-control"
+                AutoPostBack="true" OnTextChanged="txtCodigoBarras_TextChanged"
+                placeholder="Escanea o escribe el código">
+            </asp:TextBox>
+            <asp:HiddenField ID="hiddenIdMedicamento" runat="server" />
+        </div>
+
+        <!-- Botón escanear -->
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="button" onclick="iniciarEscaneo()" class="btn btn-secondary w-100">
+                📷 Escanear
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Segunda fila: Lote, Cantidad, Descuento -->
+    <div class="row mb-3">
+        <!-- Lote -->
+        <div class="col-md-4">
+            <label class="form-control-label">Seleccionar Lote:</label>
+            <asp:DropDownList ID="ddlLote" runat="server" CssClass="form-select"
+                DataSourceID="SqlDataSourceLotes" DataTextField="numero_de_lote" DataValueField="id_lote">
+            </asp:DropDownList>
+            <asp:SqlDataSource runat="server" ID="SqlDataSourceLotes"
+                ConnectionString='<%$ ConnectionStrings:DefaultConnection %>'
+                SelectCommand="SELECT id_lote, numero_de_lote FROM lote WHERE (id_medicamento = @id_medicamento) AND (activo = 1) ORDER BY id_lote DESC">
+                <SelectParameters>
+                    <asp:Parameter Name="id_medicamento" Type="Int32" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="col-md-4">
+            <label class="form-control-label">Cantidad comprada:</label>
+            <asp:TextBox ID="txtCantidadC" runat="server" Placeholder="Numeros enteros" CssClass="form-control"></asp:TextBox>
+        </div>
+
+        <!-- Descuento -->
+        <!--<div class="col-md-4">
+            <label class="form-control-label">Descuento:</label>
+            <asp:TextBox ID="txtDescuento" runat="server" Placeholder="Funcion inactiva" CssClass="form-control"></asp:TextBox>
+        </div>-->
+    </div>
+</div>
+            
+        <!-- Vista escáner -->
+        <div class="col-md-3 d-flex flex-column justify-content-between">
+            <label class="form-control-label">Vista Escáner:</label>
+            <div id="reader" style="width:100%; height:260px; border:1px solid #ccc; border-radius:6px;"></div>
+        </div>
+        </div>
+
+                <div class="row mb-3 text-center">
+                    <div class="col-md-3">
                         <asp:Button ID="btnInsertar" runat="server" Text="Insertar" CssClass="btn btn-success w-100" OnClick="btnInsertar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-info w-100" OnClick="btnModificar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger w-100" OnClick="btnEliminar_Click" />
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-3">
                         <asp:Button ID="btnExportarExcel" runat="server" Text="Exportar a Excel" CssClass="btn btn-primary w-100" OnClick="btnExportarExcel_Click" />
                     </div>
                 </div>
@@ -86,4 +125,37 @@
         </asp:GridView>
     </div>
     <asp:SqlDataSource runat="server" ID="SqlDataSourceCompras" ConnectionString='<%$ ConnectionStrings:DefaultConnection %>' SelectCommand="SELECT id_compra, codigo_de_barras, numero_de_lote, nombre, laboratorio, cantidad, costo, costo_total, fecha_caducidad, fecha_de_entrada, realizado_por FROM ViewCompra ORDER BY id_compra DESC"></asp:SqlDataSource>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    function iniciarEscaneo() {
+        const html5QrCode = new Html5Qrcode("reader");
+        const qrConfig = { fps: 10, qrbox: 250 };
+
+        html5QrCode.start(
+            { facingMode: "environment" },
+            qrConfig,
+            (decodedText) => {
+                const input = document.getElementById('<%= txtCodigoBarras.ClientID %>');
+                input.value = decodedText;
+
+                html5QrCode.stop().then(() => {
+                    document.getElementById("reader").innerHTML = "";
+                });
+
+                // Forzar blur y luego __doPostBack
+                input.focus();
+                setTimeout(() => {
+                    input.blur(); // esto activa el TextChanged si es manual
+                    __doPostBack('<%= txtCodigoBarras.UniqueID %>', '');
+                }, 300);
+            },
+            (errorMessage) => {
+                // Puedes ignorar o mostrar error del escáner
+            }
+        ).catch(err => {
+            console.error("Error al acceder a la cámara", err);
+        });
+    }
+</script>
+
 </asp:Content>

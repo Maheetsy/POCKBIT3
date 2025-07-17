@@ -24,7 +24,41 @@ namespace POCKBIT_v2.Paginas
             //    Response.Redirect("~/Account/Login");
             //}
         }
+        protected void txtCodigoBarras_TextChanged(object sender, EventArgs e)
+        {
+            string codigo = txtCodigoBarras.Text.Trim();
 
+            if (!string.IsNullOrEmpty(codigo))
+            {
+                using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+                {
+                    conexion.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@codigo", codigo);
+                        object resultado = cmd.ExecuteScalar();
+
+                        if (resultado != null)
+                        {
+                            string idMedicamento = resultado.ToString();
+                            hiddenIdMedicamento.Value = idMedicamento;
+
+                            MostrarMensaje("✅ Producto encontrado. Selecciona el lote.", "success");
+
+                            // Rebind del DropDownList con parámetros manuales
+                            SqlDataSourceLotes.SelectParameters["id_medicamento"].DefaultValue = idMedicamento;
+                            ddlLote.DataBind();
+                        }
+                        else
+                        {
+                            hiddenIdMedicamento.Value = string.Empty;
+                            ddlLote.Items.Clear();
+                            MostrarMensaje("⚠️ Producto no dado de alta aún.", "danger");
+                        }
+                    }
+                }
+            }
+        }
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {
@@ -71,8 +105,8 @@ namespace POCKBIT_v2.Paginas
 
         public void BorrarTxt()
         {
-            txtCantidadC.Text = "";
-            ddlCodigoB.SelectedIndex = -1;
+            txtCantidadC.Text = ""; 
+            txtCodigoBarras.Text = "";
             ddlLote.SelectedIndex = -1;
             lblId.Text = "";
         }
@@ -106,8 +140,7 @@ namespace POCKBIT_v2.Paginas
 
         protected void LlenarDropDownLists()
         {
-            ddlCodigoB.DataBind();
-            ddlLote.DataBind();
+            //ddlLote.DataBind();
             GVCompras.DataBind();
         }
         protected void btnInsertar_Click(object sender, EventArgs e)
@@ -144,24 +177,36 @@ namespace POCKBIT_v2.Paginas
                 MostrarMensaje("Error: " + ex.Message, "danger");
             }
         }
-
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             try
             {
+                // Validación previa
+                if (string.IsNullOrEmpty(lblId.Text))
+                {
+                    MostrarMensaje("⚠️ Por favor selecciona una compra de la tabla para modificar.", "warning");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(ddlLote.SelectedValue))
+                {
+                    MostrarMensaje("⚠️ Por favor selecciona un lote válido antes de modificar.", "warning");
+                    return;
+                }
+
                 using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
                 {
                     conexion.Open();
                     using (SqlCommand cmd = new SqlCommand("sp_ActualizarCompra", conexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         cmd.Parameters.AddWithValue("@id_compra", int.Parse(lblId.Text));
                         cmd.Parameters.AddWithValue("@id_lote", int.Parse(ddlLote.SelectedValue));
                         cmd.Parameters.AddWithValue("@cantidad", int.Parse(txtCantidadC.Text));
                         cmd.Parameters.AddWithValue("@realizado_por", HttpContext.Current.User.Identity.Name);
                         cmd.Parameters.AddWithValue("@fecha_de_entrada", DateTime.Now);
 
-                        // Cambiar para leer el mensaje de retorno
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -171,16 +216,80 @@ namespace POCKBIT_v2.Paginas
                             }
                         }
                     }
+
+                    // Limpiar campos y refrescar tabla
                     BorrarTxt();
                     LlenarDropDownLists();
                 }
             }
             catch (Exception ex)
             {
-                MostrarMensaje("Error: " + ex.Message, "danger");
+                MostrarMensaje("❌ Error al modificar: " + ex.Message, "danger");
             }
         }
 
+        protected void GVCompras_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GridViewRow row = GVCompras.SelectedRow;
+
+            lblId.Text = row.Cells[1].Text.Trim();
+            txtCantidadC.Text = row.Cells[6].Text.Trim();
+
+            string codigoBarras = row.Cells[2].Text.Trim();
+            string numeroLote = row.Cells[3].Text.Trim();
+            txtCodigoBarras.Text = codigoBarras;
+
+            // Simular el comportamiento de TextChanged (obtener id_medicamento y llenar ddlLote)
+            using (SqlConnection conexion = new SqlConnection(Get_ConnectionString()))
+            {
+                conexion.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT id_medicamento FROM medicamento WHERE codigo_de_barras = @codigo AND activo = 1", conexion))
+                {
+                    cmd.Parameters.AddWithValue("@codigo", codigoBarras);
+                    object resultado = cmd.ExecuteScalar();
+
+                    if (resultado != null)
+                    {
+                        string idMedicamento = resultado.ToString();
+                        hiddenIdMedicamento.Value = idMedicamento;
+
+                        SqlDataSourceLotes.SelectParameters["id_medicamento"].DefaultValue = idMedicamento;
+                        ddlLote.DataBind();
+
+                        // Seleccionar el lote correcto
+                        foreach (ListItem item in ddlLote.Items)
+                        {
+                            if (item.Text == numeroLote)
+                            {
+                                ddlLote.ClearSelection();
+                                item.Selected = true;
+                                break;
+                            }
+                        }
+
+                        MostrarMensaje("✅ Medicamento y lote recuperados correctamente.", "success");
+                    }
+                    else
+                    {
+                        MostrarMensaje("⚠️ El medicamento ya no existe o está inactivo.", "danger");
+                        ddlLote.Items.Clear();
+                        hiddenIdMedicamento.Value = "";
+                    }
+                }
+            }
+        }
+
+        protected void GVCompras_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                Button selectButton = e.Row.Cells[0].Controls[0] as Button;
+                if (selectButton != null)
+                {
+                    selectButton.CssClass = "btn btn-info";
+                }
+            }
+        }
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try
@@ -210,55 +319,6 @@ namespace POCKBIT_v2.Paginas
             catch (Exception ex)
             {
                 MostrarMensaje("Error: " + ex.Message, "danger");
-            }
-        }
-        protected void GVCompras_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            GridViewRow row = GVCompras.SelectedRow;
-
-            lblId.Text = row.Cells[1].Text.Trim();
-            txtCantidadC.Text = row.Cells[6].Text.Trim();
-
-            // Obtener los valores reales desde las celdas
-            string codigoBarras = row.Cells[2].Text.Trim();
-            string numeroLote = row.Cells[3].Text.Trim();
-
-            // Seleccionar el medicamento correcto en ddlCodigoB
-            foreach (ListItem item in ddlCodigoB.Items)
-            {
-                if (item.Text == codigoBarras)
-                {
-                    ddlCodigoB.ClearSelection();
-                    item.Selected = true;
-                    break;
-                }
-            }
-
-            // Re-bind para cargar los lotes del medicamento seleccionado
-            ddlLote.DataBind();
-
-            // Seleccionar el lote correcto en ddlLote
-            foreach (ListItem item in ddlLote.Items)
-            {
-                if (item.Text == numeroLote)
-                {
-                    ddlLote.ClearSelection();
-                    item.Selected = true;
-                    break;
-                }
-            }
-        }
-
-
-        protected void GVCompras_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                Button selectButton = e.Row.Cells[0].Controls[0] as Button;
-                if (selectButton != null)
-                {
-                    selectButton.CssClass = "btn btn-info";
-                }
             }
         }
     }

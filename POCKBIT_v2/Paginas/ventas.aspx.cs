@@ -331,7 +331,6 @@ namespace POCKBIT_v2.Paginas
                 }
             }
         }
-
         protected void txtCodigoBarras_TextChanged(object sender, EventArgs e)
         {
             string codigo = txtCodigoBarras.Text.Trim();

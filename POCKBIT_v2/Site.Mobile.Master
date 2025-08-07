@@ -86,7 +86,7 @@
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/dashboard">Dashboard</a></li>
+                                <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/dashboard">Inicio</a></li>
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/laboratorios">Laboratorios</a></li>
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/medicamentos">Medicamentos</a></li>
                                 <li class="nav-item"><a class="nav-link" runat="server" href="~/Paginas/lotes">Lotes</a></li>

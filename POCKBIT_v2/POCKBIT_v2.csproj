@@ -427,6 +427,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
+    <Content Include="tc_code_02_automatizado.py" />
     <Content Include="tc_code_03_automatizado.py" />
     <Content Include="tc_sec_04_automatizado.py" />
     <Content Include="ViewSwitcher.ascx" />

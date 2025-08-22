@@ -1,11 +1,9 @@
 ﻿using ClosedXML.Excel;
 using System;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace POCKBIT_v2.Paginas
@@ -20,7 +18,7 @@ namespace POCKBIT_v2.Paginas
             }
             SeguridadHelper.VerificarAutenticacion2FA(this);
         }
-   
+
 
         protected void btnExportarExcel_Click(object sender, EventArgs e)
         {

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Security.Claims;
-using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -16,7 +13,7 @@ namespace POCKBIT_v2
         private const string AntiXsrfTokenKey = "__AntiXsrfToken";
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
-       
+
         protected void Page_Init(object sender, EventArgs e)
         {
             // El código siguiente ayuda a proteger frente a ataques XSRF

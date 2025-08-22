@@ -1,13 +1,9 @@
-﻿using System;
-using System.Configuration;
+﻿using POCKBIT_v2.Helpers;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using ClosedXML.Excel;
-using POCKBIT_v2.Helpers;
 
 namespace POCKBIT_v2.Paginas
 {
@@ -78,7 +74,7 @@ namespace POCKBIT_v2.Paginas
         }
         public void BorrarTxt()
         {
-            txtCantidadC.Text = ""; 
+            txtCantidadC.Text = "";
             txtCodigoBarras.Text = "";
             ddlLote.SelectedIndex = -1;
             lblId.Text = "";

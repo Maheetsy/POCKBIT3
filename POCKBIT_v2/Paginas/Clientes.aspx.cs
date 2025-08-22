@@ -1,12 +1,7 @@
-﻿using ClosedXML.Excel;
-using POCKBIT_v2.Helpers;
+﻿using POCKBIT_v2.Helpers;
 using System;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace POCKBIT_v2.Paginas
@@ -146,7 +141,7 @@ namespace POCKBIT_v2.Paginas
                         cmd.Parameters.AddWithValue("@nombre", txtNombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@direccion", txtDireccion.Text.Trim());
                         cmd.Parameters.AddWithValue("@telefono", txtTelefono.Text.Trim());
-                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim()); 
+                        cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
                         cmd.Parameters.AddWithValue("@activo", ddlEstado.SelectedValue);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())

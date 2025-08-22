@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Base32;
+﻿using Base32;
 using OtpSharp;
 using QRCoder;
+using System;
+using System.Data.SqlClient;
+using System.Drawing.Imaging;
+using System.Web.Configuration;
 
 namespace POCKBIT_v2._2Factores
 {
